@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:get/get.dart';
 import 'controller.dart';
+import 'dbHelper.dart';
 
 class CalendarPage extends StatelessWidget {
-  final ctrl = Get.put(Controller());
+  final Controller ctrl = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +66,7 @@ class _MyCalenderState extends State<MyCalender> {
 class ScheduleBox extends StatelessWidget {
   ScheduleBox({ Key? key }) : super(key: key);
   final Controller ctrl = Get.find();
-
+  final DBHelper dbCtrl = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,7 +74,10 @@ class ScheduleBox extends StatelessWidget {
         child: GetBuilder<Controller>(
           builder: (_) => Text('move to ${ctrl.selectedDay}')
         ),
-        onPressed: () => print('hi'),
+        onPressed: () async {
+          // print(dbCtrl.db);
+          dbCtrl.insertCard('1991-01-01', 'hellow');
+        },
       )
     );
   }

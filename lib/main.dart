@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // import 'designPractice.dart';
 import 'calendarPage.dart';
 import 'package:get/get.dart';
+import 'controller.dart';
+import 'dbHelper.dart';
 
 void main() => runApp(Nav2App());
 
@@ -31,6 +33,8 @@ class Nav2App extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  final ctrl = Get.put(Controller());
+  final dbCtrl = Get.put(DBHelper());
   final Widget navigateCalendarButton = Container(
     child: TextButton(
       child: Text('caledar page'),
