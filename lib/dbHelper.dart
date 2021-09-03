@@ -4,21 +4,16 @@ import 'package:path/path.dart';
 import 'config.dart';
 
 class DBHelper {
-  Database? _db;
+  late final Database db;
 
-  Future<Database?> get db async {
-    if (_db != null) {
-      return _db;
-    }
-    _db = await initDb();
-    return _db;
+  DBHelper() {
+    initDb(); 
   }
 
-  Future<Database> initDb() async {
+  initDb() async {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, DB_NAME);
-    var m_db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return m_db;
+    db = await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   _onCreate(Database db, int version) async {
@@ -68,12 +63,22 @@ class DBHelper {
   }
 
   insertCard(String date, String note) async {
-    int cid = db.rawInsert(
+    int cid = await db.rawInsert(
       '''
       INSERT INTO card VALUES(?, ? ) 
       ''',
       [date, note]
     );
-  return cid;
+
+    return cid;
+  }
+
+  listCard() async {
+    var data = await db.rawQuery(
+      '''
+      SELECT * FROM card; 
+      '''
+    );
+    print(data);
   }
 }

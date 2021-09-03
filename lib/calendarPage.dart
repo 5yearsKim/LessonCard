@@ -30,12 +30,30 @@ class MyCalender extends StatefulWidget {
 }
 
 class _MyCalenderState extends State<MyCalender> {
+  _MyCalenderState() {
+    _refreshCardList();
+  }
   final Controller ctrl = Get.find();
+  final DBHelper dbCtrl = Get.find();
+
   void _onDaySelected(selectedDay, focusedDay) {
     if (!isSameDay(ctrl.selectedDay, selectedDay)) {
       ctrl.setSelectedDay(selectedDay);
     }
   }
+
+  _refreshCardList() async {
+    final data = await dbCtrl.listCard();
+    print(data.toMap(()));
+    // print(data.map((item) => {item.target_date : item.note}));
+  }
+
+  final eventDict = {};
+  
+  _getEventsFromDay(day) {
+    return eventDict[day] ?? [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,13 +70,19 @@ class _MyCalenderState extends State<MyCalender> {
               shape: BoxShape.circle,
             ),
             todayDecoration: BoxDecoration(
-                color: Colors.purpleAccent,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0)),
+              color: Colors.purpleAccent,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5.0)
+            ),
+            defaultDecoration: BoxDecoration(
+              color: Colors.yellow,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5.0)
+            ),
           ),
           selectedDayPredicate: (DateTime date) => isSameDay(date, ctrl.selectedDay),
+          ),
         ),
-      ),
     );
   }
 }
@@ -75,8 +99,9 @@ class ScheduleBox extends StatelessWidget {
           builder: (_) => Text('move to ${ctrl.selectedDay}')
         ),
         onPressed: () async {
+          final data = await dbCtrl.listCard();
           // print(dbCtrl.db);
-          dbCtrl.insertCard('1991-01-01', 'hellow');
+          // int cid = await dbCtrl.insertCard('1991-01-01', 'hellow');
         },
       )
     );
