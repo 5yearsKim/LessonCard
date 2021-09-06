@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'tutorialPage.dart';
 // import 'designPractice.dart';
-import 'calendarPage.dart';
 import 'package:get/get.dart';
+import 'calendarPage.dart';
+import 'cardPage.dart';
+
 import 'controller.dart';
 import 'dbHelper.dart';
 
@@ -27,6 +29,10 @@ class Nav2App extends StatelessWidget {
           name: '/calendar',
           page: () => CalendarPage(),
         ),
+        GetPage(
+          name: '/card',
+          page: () => CardPage(),
+        )
       ],
     );
   }

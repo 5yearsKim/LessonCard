@@ -62,10 +62,12 @@ class DBHelper {
     });
   }
 
+  // Card
   insertCard(String date, String note) async {
     int cid = await db.rawInsert(
       '''
-      INSERT INTO card VALUES(?, ? ) 
+      INSERT INTO card VALUES(?, ?)
+      ON CONFLICT DO NOTHING
       ''',
       [date, note]
     );
@@ -79,6 +81,27 @@ class DBHelper {
       SELECT * FROM card; 
       '''
     );
-    print(data);
+    return data;
+  }
+
+  listTrack(targetDate) async {
+    var data = await db.rawQuery(
+      '''
+      SELECT * FROM track WHERE target_date=? 
+      ''',
+      [targetDate]
+    );
+    return data;
+  }
+  // Track
+  insertTrack(String targetDate, String subjectName, String stampName, int maxStamp, String color) async {
+    int tid = await db.rawInsert(
+      '''
+      INSERT INTO track (target_date, subject_name, stamp_name, max_stamp, color)
+      VALUES (?, ?, ?, ?, ?) 
+      ''',
+      [targetDate, subjectName, stampName, maxStamp, color]
+    );
+    return tid;
   }
 }
