@@ -17,6 +17,7 @@ class Nav2App extends StatelessWidget {
       title: 'practice project',
       theme: ThemeData(
         primarySwatch: Colors.amber,
+        scaffoldBackgroundColor: Colors.indigo[900],
       ),
       defaultTransition: Transition.native,
       initialRoute: '/',

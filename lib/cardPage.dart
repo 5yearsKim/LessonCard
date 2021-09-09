@@ -7,8 +7,8 @@ import 'trackLine.dart';
 import 'controller.dart';
 
 class CardPage extends StatelessWidget {
-  const CardPage({Key? key}) : super(key: key);
-
+  CardPage({Key? key}) : super(key: key);
+  final Controller ctrl = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +20,12 @@ class CardPage extends StatelessWidget {
             Text('hello'),
             TrackList(),
             AddTrack(),
+            OutlinedButton(
+              child: Text('check'),
+              onPressed: () {
+                print(ctrl.stampDict);
+              },
+            )
           ],
         ));
   }
@@ -35,33 +41,38 @@ class TrackList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 300,
-        child: GetBuilder<Controller>(
-            builder: (_) => ReorderableListView(
-                  children: [
-                    for (int i = 0; i < ctrl.trackList.length; i++)
-                      Row(
-                        key: Key('${i}'),
-                        children: [
-                          Text(ctrl.trackList[i]['subject_name']),
-                          OutlinedButton(
-                            child: Text('delete'),
-                            onPressed: () => ctrl.deleteTrack(ctrl.trackList[i]['id']),
-                          ),
-                          TrackLine(
-                            ctrl.trackList[i]['id'],
-                            maxStamp: ctrl.trackList[i]['max_stamp'],
-                            // maxStamp: 3,
-                          )
-                        ],
-                      ),
-                  ],
-                  padding: EdgeInsets.all(10),
-                  onReorder: (int oldIdx, int newIdx) {
-                    ctrl.reorderTrack(oldIdx, newIdx);
-                  },
-                )));
+    // return Container(
+    return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: 600,
+          height: 300,
+          child: GetBuilder<Controller>(
+              builder: (_) => ReorderableListView(
+                    children: [
+                      for (int i = 0; i < ctrl.trackList.length; i++)
+                        Row(
+                          key: Key('${i}'),
+                          children: [
+                            Text(ctrl.trackList[i]['subject_name']),
+                            OutlinedButton(
+                              child: Text('delete'),
+                              onPressed: () => ctrl.deleteTrack(ctrl.trackList[i]['id']),
+                            ),
+                            TrackLine(
+                              ctrl.trackList[i]['id'],
+                              maxStamp: ctrl.trackList[i]['max_stamp'],
+                              // maxStamp: 3,
+                            )
+                          ],
+                        ),
+                    ],
+                    padding: EdgeInsets.all(10),
+                    onReorder: (int oldIdx, int newIdx) {
+                      ctrl.reorderTrack(oldIdx, newIdx);
+                    },
+                  )),
+        ));
   }
 }
 

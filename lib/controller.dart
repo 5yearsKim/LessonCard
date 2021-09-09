@@ -27,7 +27,7 @@ class Controller extends GetxController {
   void bringCardList() async {
     final data = await dbCtrl.listCard() ?? [];
     cardDict = Map.fromIterable(data, key: (e) => e['target_date'], value: (e) => e['note']);
-    print('card ${cardDict}');
+    // print('card ${cardDict}');
     update();
   }
 
@@ -95,14 +95,13 @@ class Controller extends GetxController {
     Map<int, List<dynamic>> tempDict = {};
     for (int i=0; i < data.length; i++ ) {
       item = data[i];
-      if (tempDict.containsKey(item['id'])) {
-        tempDict[item['id']]?.add(item);
+      if (tempDict.containsKey(item['track_id'])) {
+        tempDict[item['track_id']]?.add(item);
       } else {
-        tempDict[item['id']] = [item];
+        tempDict[item['track_id']] = [item];
       }
     }
     stampDict = tempDict;
-    // print(data);
     update();
   }
 
@@ -114,6 +113,13 @@ class Controller extends GetxController {
 
   Future<int> insertStamp(trackId, [note='']) async {
     int sid = await dbCtrl.insertStamp(trackId, note);
+    bringStampByTrackId(trackId);
+    update();
+    return sid;
+  }
+
+  Future<int> deleteStamp(trackId, stampId) async {
+    int sid = await dbCtrl.deleteStamp(stampId);
     bringStampByTrackId(trackId);
     update();
     return sid;

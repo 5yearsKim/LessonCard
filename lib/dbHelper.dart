@@ -180,4 +180,15 @@ class DBHelper {
     );
     return sid;
   }
+  
+  deleteStamp(int stampId) async {
+    int sid = await db.rawDelete(
+      '''
+      DELETE FROM stamp
+      WHERE id = ?
+      ''',
+      [stampId],
+    );
+    return sid;
+  }
 }
