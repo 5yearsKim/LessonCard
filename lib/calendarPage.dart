@@ -18,8 +18,24 @@ class CalendarPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          MyCalender(),
-          ScheduleBox()
+          Container(
+            child: MyCalender(),
+            margin: EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          Container(
+            child: ScheduleBox(),
+            margin: EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            )
+          )
         ],
       )
     );

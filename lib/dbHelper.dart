@@ -31,24 +31,13 @@ class DBHelper {
       );
       txn.execute(
         '''
-        create table subject (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        description TEXT,
-        max_stamp INTEGER,
-        color TEXT
-        )
-        '''
-      );
-      txn.execute(
-        '''
         CREATE TABLE track (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           target_date TEXT,
           subject_name TEXT,
           stamp_name TEXT,
           max_stamp INTEGER,
-          order_index INTEGER,
+          order_idx INTEGER,
           color TEXT,
           FOREIGN KEY(target_date) REFERENCES card(target_date)
           ON DELETE CASCADE
@@ -97,17 +86,17 @@ class DBHelper {
     var data = await db.rawQuery(
       '''
       SELECT * FROM track WHERE target_date=?
-      ORDER BY order_index
+      ORDER BY order_idx
       ''',
       [targetDate]
     );
     return data;
   }
 
-  insertTrack(String targetDate, String subjectName, String stampName, int maxStamp, int orderIndex, String color) async {
+  insertTrack(String targetDate, String subjectName, String stampName, int maxStamp, int orderIdx, String color) async {
     int tid = await db.rawInsert(
       '''
-      INSERT INTO track (target_date, subject_name, stamp_name, max_stamp, order_index, color)
+      INSERT INTO track (target_date, subject_name, stamp_name, max_stamp, order_idx, color)
       VALUES (?, ?, ?, ?, ?, ?)
       ''',
       [targetDate, subjectName, stampName, maxStamp, color]
@@ -115,17 +104,17 @@ class DBHelper {
     return tid;
   }
 
-  updateTrack(int trackId, {String? subjectName, int? maxStamp, int? orderIndex, String? color}) async {
+  updateTrack(int trackId, {String? subjectName, int? maxStamp, int? orderIdx, String? color}) async {
     String sql = 'UPDATE track SET ';
     List<String> options = [];
     if (subjectName != null) 
-      options.add('subject_name=${subjectName}');
+      options.add('subject_name=\'${subjectName}\'');
     if (maxStamp != null)
       options.add('max_stamp = ${maxStamp}');
-    if (orderIndex != null)
-      options.add('order_index = ${orderIndex}');
+    if (orderIdx != null)
+      options.add('order_idx = ${orderIdx}');
     if (color != null)
-      options.add('color = ${color}');
+      options.add('color = \'${color}\'');
     if (options.isEmpty)
       return;
     sql += options.join(',');
@@ -143,6 +132,15 @@ class DBHelper {
       [trackId]
     );
     return tid;
+  }
+
+  listSubjectName() async {
+    var data = await db.rawQuery(
+      '''
+      SELECT DISTINCT subject_name FROM track ORDER BY target_date
+      '''
+    );
+    return data;
   }
 
   // stamp

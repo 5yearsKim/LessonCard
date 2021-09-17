@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'dbHelper.dart';
 import 'package:intl/intl.dart';
 
@@ -81,11 +82,22 @@ class Controller extends GetxController {
     dynamic item;
     for (int i = 0; i < trackList.length; i++) {
       item = trackList[i];
-      if (i != item['order_index']) {
-        // print('${item['subject_name']}: ${item['order_index']} => ${i}');
-        dbCtrl.updateTrack(item['id'], orderIndex: i);
+      if (i != item['order_idx']) {
+        // print('${item['subject_name']}: ${item['order_idx']} => ${i}');
+        updateTrack(item['id'], orderIdx: i);
       }
     }
+  }
+
+  void updateTrack(int trackId, {String? subjectName, int? maxStamp, int? orderIdx, Color? color}) async {
+    await dbCtrl.updateTrack(
+      trackId,
+      subjectName: subjectName,
+      maxStamp: maxStamp,
+      color: color?.value.toString(),
+    );
+    bringTrackList();
+    // update(); 
   }
 
   //stamp 
