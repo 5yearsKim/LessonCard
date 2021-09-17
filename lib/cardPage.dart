@@ -6,6 +6,7 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 import 'trackLine.dart';
 import 'controller.dart';
 import 'tools/numericStepButton.dart';
+import 'utils/stamp.dart';
 
 class CardPage extends StatelessWidget {
   CardPage({Key? key}) : super(key: key);
@@ -50,8 +51,7 @@ class TrackList extends StatelessWidget {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          width: 600,
-          // height: 300,
+          width: 500,
           child: GetBuilder<Controller>(
               builder: (_) => ReorderableListView(
                     shrinkWrap: true,
@@ -62,8 +62,9 @@ class TrackList extends StatelessWidget {
                           children: [
                             TrackButton(i),
                             TrackLine(
-                              ctrl.trackList[i]['id'],
+                              trackId: ctrl.trackList[i]['id'],
                               maxStamp: ctrl.trackList[i]['max_stamp'],
+                              stampName: ctrl.trackList[i]['stamp_name'] ?? 'bear',
                               // maxStamp: 3,
                             )
                           ],
@@ -91,6 +92,7 @@ class _TrackButtonState extends State<TrackButton> {
   TextEditingController nameTcr = TextEditingController();
   late Color _color;
   late int maxStamp;
+  String stampName = 'cat';
 
   get track {
     return ctrl.trackList[widget.i];
@@ -102,8 +104,10 @@ class _TrackButtonState extends State<TrackButton> {
     nameTcr.text = track['subject_name'];
     maxStamp = track['max_stamp'];
     try {
-      _color = Color(track['color']);
+      print(track['color']);
+      _color = Color(int.parse(track['color']));
     } catch (e) {
+      print(e);
       _color = Colors.blue;
     }
   }
@@ -205,6 +209,16 @@ class _TrackButtonState extends State<TrackButton> {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text('도장 모양'),
+                IconButton(
+                  icon: Image.asset(animalDict[stampName] ?? ''),
+                  onPressed: () {},
+                )
+              ],
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
@@ -231,6 +245,7 @@ class _TrackButtonState extends State<TrackButton> {
                 subjectName: nameTcr.text,
                 color: _color,
                 maxStamp: maxStamp,
+                stampName: stampName,
               );
               Navigator.of(context).pop();
             },

@@ -104,7 +104,7 @@ class DBHelper {
     return tid;
   }
 
-  updateTrack(int trackId, {String? subjectName, int? maxStamp, int? orderIdx, String? color}) async {
+  updateTrack(int trackId, {String? subjectName, int? maxStamp, int? orderIdx, String? color, String? stampName}) async {
     String sql = 'UPDATE track SET ';
     List<String> options = [];
     if (subjectName != null) 
@@ -115,6 +115,9 @@ class DBHelper {
       options.add('order_idx = ${orderIdx}');
     if (color != null)
       options.add('color = \'${color}\'');
+    if (stampName != null) {
+      options.add('stamp_name=\'${stampName}\'');
+    }
     if (options.isEmpty)
       return;
     sql += options.join(',');

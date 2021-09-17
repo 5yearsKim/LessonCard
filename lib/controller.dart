@@ -89,12 +89,13 @@ class Controller extends GetxController {
     }
   }
 
-  void updateTrack(int trackId, {String? subjectName, int? maxStamp, int? orderIdx, Color? color}) async {
+  void updateTrack(int trackId, {String? subjectName, int? maxStamp, int? orderIdx, Color? color, String? stampName}) async {
     await dbCtrl.updateTrack(
       trackId,
       subjectName: subjectName,
       maxStamp: maxStamp,
       color: color?.value.toString(),
+      stampName: stampName,
     );
     bringTrackList();
     // update(); 
