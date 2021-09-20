@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 // import 'tutorialPage.dart';
 // import 'designPractice.dart';
 import 'package:get/get.dart';
-import 'calendarPage.dart';
-import 'cardPage.dart';
+import 'screens/calendarPage.dart';
+import 'screens/cardPage.dart';
 
 import 'controller.dart';
 import 'dbHelper.dart';

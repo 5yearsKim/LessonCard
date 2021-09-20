@@ -5,8 +5,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import 'controller.dart';
-import 'dbHelper.dart';
+import '../controller.dart';
+import '../dbHelper.dart';
 
 class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();

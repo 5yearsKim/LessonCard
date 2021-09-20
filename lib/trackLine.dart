@@ -8,12 +8,12 @@ class TrackLine extends StatelessWidget {
   final int trackId;
   final int maxStamp;
   final String stampName;
-  TrackLine({required int this.trackId, int this.maxStamp = 7, String this.stampName = 'bear', Key? key}) : super(key: key) {}
+  TrackLine({required int this.trackId, int this.maxStamp = 7, String this.stampName = '', Key? key}) : super(key: key) {}
   final Controller ctrl = Get.find();
 
   get stamps {
-    print('stampname');
-    print(stampName);
+    // print('stampname');
+    // print(stampName);
     return ctrl.stampDict[trackId] ?? [];
   }
 
@@ -55,7 +55,10 @@ class Stamp extends StatelessWidget {
   }) : super(key: key);
   final Controller ctrl = Get.find();
 
-  Widget StampImage({String stampName = 'bear', bool isHide = false}) {
+  Widget StampImage({String stampName = '', bool isHide = false}) {
+    if (stampName.isEmpty) {
+      stampName = 'bear';
+    }
     return Image.asset(
       animalDict[stampName] ?? '',
       color: isHide ? Colors.grey : null,
