@@ -1,6 +1,6 @@
 Map<String, String> animalDict = {
   'bear': 'images/animals/bear.png',
-  'bore': 'images/animals/bore.png',
+  'bore': 'images/animals/boar.png',
   'cat': 'images/animals/cat.png',
   'chick': 'images/animals/chick.png',
   'cow': 'images/animals/cow.png',

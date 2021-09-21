@@ -6,6 +6,7 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 // custom
 import 'package:myapp/controller.dart';
 import 'package:myapp/tools/numericStepButton.dart';
+import 'package:myapp/tools/animalPicker.dart';
 import 'package:myapp/utils/stamp.dart';
 
 // Track Button
@@ -106,6 +107,27 @@ class _EditTrackState extends State<EditTrack> {
     );
   }
 
+  void openAnimlPicker(BuildContext context) async {
+    _openDialog(
+        'Animal Picker',
+        AnimalPicker(
+          animal: stampName,
+          onChangeAnimal: (animal) {
+            setState(() {
+              stampName = animal;
+            });
+          },
+        ),
+        [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ]);
+  }
+
   void openColorPicker(BuildContext context) async {
     _openDialog(
         'color picker',
@@ -194,7 +216,9 @@ class _EditTrackState extends State<EditTrack> {
             Text('도장 모양'),
             IconButton(
               icon: Image.asset(animalDict[stampName] ?? ''),
-              onPressed: () {},
+              onPressed: () {
+                openAnimlPicker(context);
+              },
             )
           ],
         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // custom
-import 'package:myapp/trackLine.dart';
+import 'package:myapp/components/card/trackLine.dart';
 import 'package:myapp/controller.dart';
 import 'package:myapp/components/card/trackButton.dart';
 
