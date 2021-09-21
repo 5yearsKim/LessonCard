@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 
 // custom
 import 'package:myapp/components/card/trackLine.dart';
-import 'package:myapp/controller.dart';
+import 'package:myapp/components/card/cardNote.dart';
 import 'package:myapp/components/card/trackButton.dart';
+import 'package:myapp/controller.dart';
 
 class CardPage extends StatelessWidget {
   CardPage({Key? key}) : super(key: key);
@@ -17,20 +18,35 @@ class CardPage extends StatelessWidget {
           title: Text('card page'),
         ),
         body: Center(
-          child: Container(
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TrackList(),
-                AddTrack(),
-              ],
-            ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TrackList(),
+                    AddTrack(),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), 
+                  color: Colors.white,
+                ),
+                child: CardNote(), 
+                // child: Text('hello'), 
+              ),
+            ],
           ),
         ));
   }
@@ -55,17 +71,12 @@ class TrackList extends StatelessWidget {
               builder: (_) => ReorderableListView(
                     shrinkWrap: true,
                     children: [
-                      for (int i = 0; i < ctrl.trackList.length; i++)
+                      for (var i=0; i < ctrl.trackList.length; i++)
                         Row(
                           key: Key('${i}'),
                           children: [
                             TrackButton(i),
-                            TrackLine(
-                              trackId: ctrl.trackList[i]['id'],
-                              maxStamp: ctrl.trackList[i]['max_stamp'],
-                              stampName: ctrl.trackList[i]['stamp_name'] ?? 'bear',
-                              // maxStamp: 3,
-                            )
+                            TrackLine(i),
                           ],
                         ),
                     ],

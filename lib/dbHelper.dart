@@ -60,6 +60,16 @@ class DBHelper {
   }
 
   // Card
+
+  listCard() async {
+    var data = await db.rawQuery(
+      '''
+      SELECT * FROM card; 
+      '''
+    );
+    return data;
+  }
+
   insertCard(String date, String note) async {
     int cid = await db.rawInsert(
       '''
@@ -72,14 +82,20 @@ class DBHelper {
     return cid;
   }
 
-  listCard() async {
-    var data = await db.rawQuery(
-      '''
-      SELECT * FROM card; 
-      '''
-    );
-    return data;
+  updateCard(String date, {String? note}) async {
+    String sql = 'UPDATE card SET ';
+    List<String> options = [];
+    if (note!= null) 
+      options.add('note=\'${note}\'');
+    if (options.isEmpty)
+      return;
+    sql += options.join(',');
+    sql += ' WHERE target_date=?';
+    int cid = await db.rawUpdate(sql, [date]);
+    return cid;
   }
+
+
 
   // Track
   listTrack(targetDate) async {
@@ -175,7 +191,7 @@ class DBHelper {
     int sid = await db.rawInsert(
       '''
       INSERT INTO stamp (track_id, created_at, note)
-      VALUES (?, datetime('now'), ?)
+      VALUES (?, datetime('now', 'localtime'), ?)
       ''',
       [trackId, note]
     );
@@ -190,6 +206,19 @@ class DBHelper {
       ''',
       [stampId],
     );
+    return sid;
+  }
+
+  updateStamp(int stampId, {String? note}) async {
+    String sql = 'UPDATE stamp SET ';
+    List<String> options = [];
+    if (note!= null) 
+      options.add('note=\'${note}\'');
+    if (options.isEmpty)
+      return;
+    sql += options.join(',');
+    sql += ' WHERE id=?';
+    int sid = await db.rawUpdate(sql, [stampId]);
     return sid;
   }
 }

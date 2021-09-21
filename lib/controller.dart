@@ -7,7 +7,7 @@ class Controller extends GetxController {
   final dbCtrl = Get.put(DBHelper());
 
   DateTime selectedDay = DateTime.now();
-  Map<String, String> cardDict = {};
+  Map<String, dynamic> cardDict = {};
   List<dynamic> trackList = [];
   Map<int, List<dynamic>> stampDict = {};
 
@@ -27,8 +27,9 @@ class Controller extends GetxController {
   // card
   void bringCardList() async {
     final data = await dbCtrl.listCard() ?? [];
-    cardDict = Map.fromIterable(data, key: (e) => e['target_date'], value: (e) => e['note']);
-    // print('card ${cardDict}');
+    print(data);
+    cardDict = Map.fromIterable(data, key: (e) => e['target_date'], value: (e) => e);
+    print('card ${cardDict}');
     update();
   }
 
@@ -38,6 +39,15 @@ class Controller extends GetxController {
     update();
     return cid;
   }
+
+  Future<void> updateCard({String? note}) async {
+    if (note == null) 
+      return ;
+    await dbCtrl.updateCard(formatDay, note: note);
+    bringCardList();
+    // update();
+  }
+
   // track
 
   void bringTrackList() async {
@@ -62,7 +72,7 @@ class Controller extends GetxController {
 
   void reorderTrack(int oldIdx, int newIdx) {
     if (oldIdx > trackList.length || newIdx > trackList.length) {
-      print('track length: ${trackList.length}/${oldIdx} ${newIdx}');
+      // print('track length: ${trackList.length}/${oldIdx} ${newIdx}');
       return;
     }
     // print('${oldIdx} ${newIdx}');
@@ -82,6 +92,7 @@ class Controller extends GetxController {
     dynamic item;
     for (int i = 0; i < trackList.length; i++) {
       item = trackList[i];
+      // print(item);
       if (i != item['order_idx']) {
         // print('${item['subject_name']}: ${item['order_idx']} => ${i}');
         updateTrack(item['id'], orderIdx: i);
@@ -94,6 +105,7 @@ class Controller extends GetxController {
       trackId,
       subjectName: subjectName,
       maxStamp: maxStamp,
+      orderIdx: orderIdx,
       color: color?.value.toString(),
       stampName: stampName,
     );
@@ -136,5 +148,11 @@ class Controller extends GetxController {
     bringStampByTrackId(trackId);
     update();
     return sid;
+  }
+
+  Future<void> updateStamp(trackId, stampId, {String? note}) async {
+    await dbCtrl.updateStamp(stampId, note: note);
+    bringStampByTrackId(trackId);
+    update();
   }
 }
