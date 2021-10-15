@@ -25,17 +25,17 @@ class Controller extends GetxController {
   }
 
   // card
-  void bringCardList() async {
+  Future<void> bringCardList() async {
     final data = await dbCtrl.listCard() ?? [];
     print(data);
     cardDict = Map.fromIterable(data, key: (e) => e['target_date'], value: (e) => e);
-    print('card ${cardDict}');
+    // print('card ${cardDict}');
     update();
   }
 
   Future<int> insertCard(String note) async {
     int cid = await dbCtrl.insertCard(formatDay, note);
-    bringCardList();
+    await bringCardList();
     update();
     return cid;
   }
@@ -50,7 +50,7 @@ class Controller extends GetxController {
 
   // track
 
-  void bringTrackList() async {
+  Future<void> bringTrackList() async {
     trackList = await dbCtrl.listTrack(formatDay);
     update();
   }

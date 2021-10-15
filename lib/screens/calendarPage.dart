@@ -64,9 +64,13 @@ class _MyCalenderState extends State<MyCalender> {
 
   List<dynamic> _getEventsFromDay(DateTime day) {
     final dayFormat = DateFormat('yyyy-MM-dd').format(day);
-    var event = ctrl.cardDict[dayFormat];
+    var card = ctrl.cardDict[dayFormat];
+    var event = [];
+    if (card != null) {
+      event = [event];
+    }
     // print('event ${formatDay} ${event}');
-    return event == null ? [] : [event];
+    return event;
   }
 
   @override
