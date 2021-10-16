@@ -215,7 +215,7 @@ class _EditTrackState extends State<EditTrack> {
           children: [
             Text('도장 모양'),
             IconButton(
-              icon: Image.asset(animalDict[stampName] ?? ''),
+              icon: Image.asset(animalDict[stampName] ?? (animalDict['bear'] as String)),
               onPressed: () {
                 openAnimlPicker(context);
               },

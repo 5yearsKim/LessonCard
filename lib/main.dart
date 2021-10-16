@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'screens/calendarPage.dart';
 import 'screens/cardPage.dart';
+import 'screens/analysisPage.dart';
 
 import 'controller.dart';
+import 'analController.dart';
 import 'dbHelper.dart';
 
 void main() => runApp(Nav2App());
@@ -33,7 +35,11 @@ class Nav2App extends StatelessWidget {
         GetPage(
           name: '/card',
           page: () => CardPage(),
-        )
+        ),
+        GetPage(
+          name: '/analysis',
+          page: () => AnalysisPage(),
+        ),
       ],
     );
   }
@@ -41,13 +47,18 @@ class Nav2App extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final ctrl = Get.put(Controller());
+  final analCtrl = Get.put(AnalController());
   final dbCtrl = Get.put(DBHelper());
-  final Widget navigateCalendarButton = Container(
-    child: TextButton(
+  final Widget navigateCalendarButton = Column(children: [
+    TextButton(
       child: Text('caledar page'),
       onPressed: () => Get.toNamed('/calendar'),
     ),
-  );
+    TextButton(
+      child: Text('analysis'),
+      onPressed: () => Get.toNamed('/analysis'),
+    )
+  ]);
 
   @override
   Widget build(BuildContext context) {

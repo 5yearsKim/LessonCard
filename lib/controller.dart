@@ -10,6 +10,7 @@ class Controller extends GetxController {
   Map<String, dynamic> cardDict = {};
   List<dynamic> trackList = [];
   Map<int, List<dynamic>> stampDict = {};
+  List<dynamic> subjectName = [];
 
   get formatDay {
     return DateFormat('yyyy-MM-dd').format(selectedDay);
@@ -27,7 +28,6 @@ class Controller extends GetxController {
   // card
   Future<void> bringCardList() async {
     final data = await dbCtrl.listCard() ?? [];
-    print(data);
     cardDict = Map.fromIterable(data, key: (e) => e['target_date'], value: (e) => e);
     // print('card ${cardDict}');
     update();
@@ -49,13 +49,12 @@ class Controller extends GetxController {
   }
 
   // track
-
   Future<void> bringTrackList() async {
     trackList = await dbCtrl.listTrack(formatDay);
     update();
   }
 
-  Future<int> insertTrack(String subjectName, [String stampName = '', int maxStamp = 7, String color = '']) async {
+  Future<int> insertTrack(String subjectName, {String stampName = '', int maxStamp = 7, String color = ''}) async {
     int tid = await dbCtrl.insertTrack(formatDay, subjectName, stampName, maxStamp, trackList.length, color);
     bringTrackList();
     update();
@@ -85,6 +84,12 @@ class Controller extends GetxController {
 
     trackList = newList;
     saveOrder();
+    update();
+  }
+
+  Future<void> bringSubjectName() async {
+    final data = await dbCtrl.listSubjectName();
+    subjectName = data;
     update();
   }
 

@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 
 //custom
 import 'package:myapp/controller.dart';
-import 'package:myapp/dbHelper.dart';
+import 'package:myapp/tools/text.dart';
+// import 'package:myapp/dbHelper.dart';
 
 class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();
@@ -48,7 +49,7 @@ class MyCalender extends StatefulWidget {
 
 class _MyCalenderState extends State<MyCalender> {
   final Controller ctrl = Get.find();
-  final DBHelper dbCtrl = Get.find();
+  // final DBHelper dbCtrl = Get.find();
 
   _MyCalenderState() {
     ctrl.bringCardList();
@@ -56,9 +57,11 @@ class _MyCalenderState extends State<MyCalender> {
 
   var eventDict = {};
 
-  void _onDaySelected(selectedDay, focusedDay) {
+  void _onDaySelected(selectedDay, focusedDay) async {
     if (!isSameDay(ctrl.selectedDay, selectedDay)) {
       ctrl.setSelectedDay(selectedDay);
+      await ctrl.bringTrackList();
+      print(ctrl.trackList);
     }
   }
 
@@ -67,7 +70,9 @@ class _MyCalenderState extends State<MyCalender> {
     var card = ctrl.cardDict[dayFormat];
     var event = [];
     if (card != null) {
-      event = [event];
+      for (var i = 0; i < card['track_cnt']; i++) {
+        event.add('.');
+      }
     }
     // print('event ${formatDay} ${event}');
     return event;
@@ -104,23 +109,37 @@ class _MyCalenderState extends State<MyCalender> {
 class ScheduleBox extends StatelessWidget {
   ScheduleBox({Key? key}) : super(key: key);
   final Controller ctrl = Get.find();
-  final DBHelper dbCtrl = Get.find();
+  // final DBHelper dbCtrl = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
+          child: GetBuilder<Controller>(builder: (_) => Text('${ctrl.selectedDay}')),
+        ),
+        Container(
             child: ElevatedButton(
-          child: GetBuilder<Controller>(builder: (_) => Text('move to ${ctrl.selectedDay}')),
+          child: Text('move to lecture card'),
           onPressed: () async {
             await ctrl.insertCard('test');
             Get.toNamed('/card');
           },
         )),
+        GetBuilder<Controller>(builder: (_) {
+          return Wrap(
+            spacing: 8.0, // gap between adjacent chips
+            runSpacing: 4.0, // gap between lines
+            children: [
+              for (final item in ctrl.trackList)
+                ColorText(item['subject_name'], item['color'])
+            ],
+          );
+        }),
         Container(child: GetBuilder<Controller>(builder: (_) {
-          return ctrl.todayCard == null ? Text('') : Text('${ctrl.todayCard['note']}');
+          return ctrl.todayCard == null ? Text('') : Text('note: ${ctrl.todayCard['note']}');
         })),
       ],
     );
   }
 }
+

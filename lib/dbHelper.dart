@@ -118,7 +118,7 @@ class DBHelper {
       INSERT INTO track (target_date, subject_name, stamp_name, max_stamp, order_idx, color)
       VALUES (?, ?, ?, ?, ?, ?)
       ''',
-      [targetDate, subjectName, stampName, maxStamp, color]
+      [targetDate, subjectName, stampName, maxStamp, orderIdx, color]
     );
     return tid;
   }
@@ -159,7 +159,9 @@ class DBHelper {
   listSubjectName() async {
     var data = await db.rawQuery(
       '''
-      SELECT DISTINCT subject_name FROM track ORDER BY target_date
+      SELECT subject_name, color, stamp_name, max_stamp
+      FROM (select * from track order by target_date DESC)
+      GROUP BY subject_name;
       '''
     );
     return data;
@@ -174,6 +176,16 @@ class DBHelper {
       ORDER BY created_at
       ''',
       [targetDate],
+    );
+    return data;
+  }
+
+  listStampAll() async {
+    var data = db.rawQuery(
+      '''
+      select subject_name, stamp.track_id, target_date, created_at 
+      from (track inner join stamp on track.id = stamp.track_id)
+      '''
     );
     return data;
   }

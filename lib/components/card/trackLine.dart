@@ -94,6 +94,7 @@ class Stamp extends StatelessWidget {
                   controller: noteTcr,
                 ),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     TextButton(
                       onPressed: () {
@@ -105,6 +106,7 @@ class Stamp extends StatelessWidget {
                   ],
                 ),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     TextButton(
                       onPressed: () {

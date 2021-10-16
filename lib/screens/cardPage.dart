@@ -1,54 +1,69 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 // custom
 import 'package:myapp/components/card/trackLine.dart';
 import 'package:myapp/components/card/cardNote.dart';
 import 'package:myapp/components/card/trackButton.dart';
 import 'package:myapp/controller.dart';
+import 'package:myapp/tools/text.dart';
 
 class CardPage extends StatelessWidget {
-  CardPage({Key? key}) : super(key: key);
-  final Controller ctrl = Get.find();
+  const CardPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('card page'),
+      appBar: AppBar(
+        title: Text('card page'),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: CardPageWrapper(),
         ),
-        body: Center(
+      ) 
+    );
+  }
+}
+
+class CardPageWrapper extends StatelessWidget {
+  CardPageWrapper({Key? key}) : super(key: key);
+  final Controller ctrl = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: EdgeInsets.all(10),
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TrackList(),
-                    AddTrack(),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), 
-                  color: Colors.white,
-                ),
-                child: CardNote(), 
-                // child: Text('hello'), 
-              ),
+              TrackList(),
+              AddTrack(),
             ],
           ),
-        ));
+        ),
+        Container(
+          margin: EdgeInsets.all(10),
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: CardNote(),
+          // child: Text('hello'),
+        ),
+      ],
+    );
   }
 }
 
@@ -56,6 +71,7 @@ class TrackList extends StatelessWidget {
   TrackList() {
     ctrl.bringTrackList();
     ctrl.bringStampList();
+    ctrl.bringSubjectName();
   }
 
   final Controller ctrl = Get.find();
@@ -71,7 +87,7 @@ class TrackList extends StatelessWidget {
               builder: (_) => ReorderableListView(
                     shrinkWrap: true,
                     children: [
-                      for (var i=0; i < ctrl.trackList.length; i++)
+                      for (var i = 0; i < ctrl.trackList.length; i++)
                         Row(
                           key: Key('${i}'),
                           children: [
@@ -89,7 +105,6 @@ class TrackList extends StatelessWidget {
   }
 }
 
-
 class AddTrack extends StatefulWidget {
   const AddTrack({Key? key}) : super(key: key);
   @override
@@ -102,6 +117,8 @@ class _AddTrackState extends State<AddTrack> {
   bool isClicked = false;
   TextEditingController nameTcr = TextEditingController();
 
+  dynamic info = null;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -110,9 +127,26 @@ class _AddTrackState extends State<AddTrack> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: TextField(
-                    // decoration: InputDecoration(border: OutlineInputBorder(), hintText: 'Enter a search term'),
-                    controller: nameTcr,
+                  child: TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: nameTcr,
+                    ),
+                    suggestionsCallback: (pattern) {
+                      return ctrl.subjectName.where(
+                        (item) => item['subject_name'].toLowerCase().contains(pattern.toLowerCase()),
+                      );
+                    },
+                    itemBuilder: (_, item) {
+                      dynamic myitem = item;
+                      return ListTile(
+                        title: ColorText(myitem['subject_name'], myitem['color']),
+                      );
+                    },
+                    onSuggestionSelected: (suggestion) {
+                      info = suggestion;
+                      print(info);
+                      nameTcr.text = (suggestion as dynamic)['subject_name'];
+                    },
                   ),
                 ),
                 TextButton(
@@ -121,7 +155,16 @@ class _AddTrackState extends State<AddTrack> {
                         print('empty text');
                         return;
                       }
-                      ctrl.insertTrack(nameTcr.text);
+                      if (info == null) {
+                        ctrl.insertTrack(nameTcr.text);
+                      } else {
+                        ctrl.insertTrack(nameTcr.text,
+                          stampName: info['stamp_name'] ?? '',
+                          color: info['color'] ?? '',
+                          maxStamp: info['max_stamp'],
+                        );
+                      }
+                      info = null;
                       nameTcr.text = '';
                       setState(() => isClicked = !isClicked);
                     },
