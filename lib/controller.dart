@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'dbHelper.dart';
 import 'package:intl/intl.dart';
 
+typedef ReportDict = Map<String, Map<int, List<dynamic>>>;
+
 class Controller extends GetxController {
   final dbCtrl = Get.put(DBHelper());
 
@@ -11,6 +13,17 @@ class Controller extends GetxController {
   List<dynamic> trackList = [];
   Map<int, List<dynamic>> stampDict = {};
   List<dynamic> subjectName = [];
+
+  ReportDict reportDict = {};
+  
+  get report {
+    var ret = {};
+    for (String sbjName  in reportDict.keys) {
+      var anal = analyzer(reportDict[sbjName]!);
+      ret[sbjName] = anal;
+    }
+    return ret;
+  }
 
   get formatDay {
     return DateFormat('yyyy-MM-dd').format(selectedDay);
@@ -141,6 +154,30 @@ class Controller extends GetxController {
     update();
   }
 
+
+  bringAllStamp() async {
+    final data = await dbCtrl.listStampAll();
+    ReportDict temp = {};
+    for (var item in data) {
+      String sbjName = item['subject_name'];
+      int trackId = item['track_id'];
+      if (temp.containsKey(sbjName)) {
+        if (temp[sbjName]!.containsKey(trackId)) {
+          temp[sbjName]![trackId]!.add(item);
+        } else {
+          temp[sbjName]![trackId] = [item];
+        }
+        temp[sbjName];
+      } else {
+        temp[sbjName] = {
+          trackId: [item]
+        };
+      }
+    }
+    reportDict = temp;
+    update();
+  }
+
   Future<int> insertStamp(trackId, [note='']) async {
     int sid = await dbCtrl.insertStamp(trackId, note);
     bringStampByTrackId(trackId);
@@ -161,3 +198,37 @@ class Controller extends GetxController {
     update();
   }
 }
+
+
+dynamic analyzer(Map<int, List<dynamic>> dict) {
+  List<dynamic> timeDiffList = [];
+  int cnt = 0;
+  double? avgSec = null; 
+  for (var trackId in dict.keys) {
+    cnt += dict[trackId]!.length;
+    List<dynamic> itemList = dict[trackId]!;
+    itemList.sort((a, b) => a['created_at'].compareTo(b['created_at']));
+    for (int i = 0 ; i < itemList.length - 1; i++ ) {
+      var thisStamp = DateTime.parse(itemList[i]['created_at']);
+      // print(itemList[i]['created_at']);
+      var nextStamp = DateTime.parse(itemList[i + 1]['created_at']);
+      var diff = nextStamp.difference(thisStamp).inSeconds;
+      timeDiffList.add(diff);
+    }
+  }
+  timeDiffList = timeDiffList.where((item) => item < 3600).toList();
+  timeDiffList.sort();
+  if (timeDiffList.length > 3) {
+    final len = timeDiffList.length;
+    final startp = len ~/ 3;
+    final endp = 2 * len ~/ 3;
+    num sum = 0;
+    for (var i = startp; i < endp; i ++) {
+      sum += timeDiffList[i];
+    }
+    avgSec = sum / (endp - startp);
+  }
+  // print(timeDiffList);
+  return {'cnt': cnt, 'avgSec': avgSec };
+}
+

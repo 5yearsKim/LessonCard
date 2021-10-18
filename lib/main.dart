@@ -7,7 +7,6 @@ import 'screens/cardPage.dart';
 import 'screens/analysisPage.dart';
 
 import 'controller.dart';
-import 'analController.dart';
 import 'dbHelper.dart';
 
 void main() => runApp(Nav2App());
@@ -47,8 +46,8 @@ class Nav2App extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final ctrl = Get.put(Controller());
-  final analCtrl = Get.put(AnalController());
   final dbCtrl = Get.put(DBHelper());
+
   final Widget navigateCalendarButton = Column(children: [
     TextButton(
       child: Text('caledar page'),
