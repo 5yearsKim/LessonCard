@@ -44,31 +44,44 @@ class Nav2App extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final ctrl = Get.put(Controller());
-  final dbCtrl = Get.put(DBHelper());
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({ Key? key }) : super(key: key);
 
-  final Widget navigateCalendarButton = Column(children: [
-    TextButton(
-      child: Text('caledar page'),
-      onPressed: () => Get.toNamed('/calendar'),
-    ),
-    TextButton(
-      child: Text('analysis'),
-      onPressed: () => Get.toNamed('/analysis'),
-    )
-  ]);
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  late final dbCtrl;
+  late final ctrl;
+  var isReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    dbCtrl = Get.put(DBHelper());
+    ctrl = Get.put(Controller());
+
+    _asyncMethod() async {
+      await dbCtrl.initDb();
+      setState(() => isReady = true);
+    }
+    _asyncMethod();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('navigation'),
-        ),
-        body: Column(
-          children: [
-            navigateCalendarButton,
-          ],
-        ));
+    if (!isReady) {
+      return Scaffold(
+        body: Text('loading..')
+      );
+    } else {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text('home'),
+          ),
+          body: CalendarPage(),
+      ); 
+    }
   }
 }

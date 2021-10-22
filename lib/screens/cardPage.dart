@@ -9,6 +9,7 @@ import 'package:myapp/components/card/cardNote.dart';
 import 'package:myapp/components/card/trackButton.dart';
 import 'package:myapp/controller.dart';
 import 'package:myapp/tools/text.dart';
+import 'package:myapp/utils/misc.dart';
 
 class CardPage extends StatelessWidget {
   const CardPage({Key? key}) : super(key: key);
@@ -130,6 +131,10 @@ class _AddTrackState extends State<AddTrack> {
                   child: TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
                       controller: nameTcr,
+                      style: TextStyle(
+                        color: info == null ? null : code2color(info['color']),
+                      ),
+                      
                     ),
                     suggestionsCallback: (pattern) {
                       return ctrl.subjectName.where(
@@ -143,8 +148,8 @@ class _AddTrackState extends State<AddTrack> {
                       );
                     },
                     onSuggestionSelected: (suggestion) {
-                      info = suggestion;
-                      print(info);
+                      setState(() => info = suggestion);
+                      // print(info);
                       nameTcr.text = (suggestion as dynamic)['subject_name'];
                     },
                   ),

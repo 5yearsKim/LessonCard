@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -8,9 +6,9 @@ import 'config.dart';
 class DBHelper {
   late final Database db;
 
-  DBHelper() {
-    initDb(); 
-  }
+  // DBHelper() {
+  //   initDb();
+  // }
 
   initDb() async {
     String dbPath = await getDatabasesPath();

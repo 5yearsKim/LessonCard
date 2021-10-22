@@ -14,11 +14,8 @@ class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('calendar page'),
-        ),
-        body: Column(
+    return Container(
+      child: Column(
           children: [
             Container(
               child: MyCalender(),

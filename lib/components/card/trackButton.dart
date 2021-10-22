@@ -8,6 +8,8 @@ import 'package:myapp/controller.dart';
 import 'package:myapp/tools/numericStepButton.dart';
 import 'package:myapp/tools/animalPicker.dart';
 import 'package:myapp/utils/stamp.dart';
+import 'package:myapp/utils/misc.dart';
+
 
 // Track Button
 class TrackButton extends StatefulWidget {
@@ -85,12 +87,7 @@ class _EditTrackState extends State<EditTrack> {
     nameTcr.text = track['subject_name'];
     maxStamp = track['max_stamp'];
     stampName = track['stamp_name'];
-    try {
-      _color = Color(int.parse(track['color']));
-    } catch (e) {
-      print(e);
-      _color = Colors.blue;
-    }
+    _color = code2color(track['color']);
   }
 
   void _openDialog(String title, Widget content, List<Widget> actions) {

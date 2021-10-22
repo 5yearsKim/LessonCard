@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 //custom
 import 'package:myapp/controller.dart';
+import 'package:myapp/utils/misc.dart';
 
 class AnalysisPage extends StatelessWidget {
   const AnalysisPage({Key? key}) : super(key: key);
@@ -82,11 +83,7 @@ class SubjectAnalysis extends StatelessWidget {
   late final _color;
   SubjectAnalysis({this.sbjName, this.maxCnt, this.color}) {
     item = ctrl.report[sbjName];
-    try {
-      _color = Color(int.parse(color));
-    } catch (e) {
-      _color = Colors.red;
-    }
+    _color = code2color(color);
   }
 
   @override
