@@ -5,14 +5,45 @@ import 'package:get/get.dart';
 // custom
 import 'package:myapp/controller.dart';
 
-class CardNote extends StatefulWidget {
-  const CardNote({Key? key}) : super(key: key);
+class CardNote extends StatelessWidget {
+  const CardNote({ Key? key }) : super(key: key);
 
   @override
-  _CardNoteState createState() => _CardNoteState();
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('연습일지', 
+          style: TextStyle(
+            color: Colors.indigo[900],
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 1,
+              color: Theme.of(context).primaryColor,
+            )
+          ),
+          child: CardNoteContent()
+        ,)
+      ],
+    );
+  }
+}
+ 
+
+class CardNoteContent extends StatefulWidget {
+  const CardNoteContent({Key? key}) : super(key: key);
+
+  @override
+  _CardNoteContentState createState() => _CardNoteContentState();
 }
 
-class _CardNoteState extends State<CardNote> {
+class _CardNoteContentState extends State<CardNoteContent> {
   final Controller ctrl = Get.find();
   final noteTcr = TextEditingController();
   bool isEdit = false;
@@ -34,28 +65,45 @@ class _CardNoteState extends State<CardNote> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            decoration: InputDecoration(border: OutlineInputBorder(), labelText: '연습일지를 적어보세요!'),
+            decoration: InputDecoration(
+              labelText: '연습일지를 적어보세요!'
+            ),
             controller: noteTcr,
           ),
-          OutlinedButton(
-            onPressed: () {
-              ctrl.updateCard(note: noteTcr.text);
-              setState(() => isEdit = false);
-            },
-            child: Text('저장'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              OutlinedButton(
+                onPressed: () {
+                  noteTcr.text = card['note'];
+                  setState(() => isEdit = false);
+                },
+                child: Text('취소'),
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  ctrl.updateCard(note: noteTcr.text);
+                  setState(() => isEdit = false);
+                },
+                child: Text('저장'),
+              )
+            ],
           )
         ],
       );
     } else {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
+      return Wrap(
+        direction: Axis.horizontal,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(noteTcr.text),
-          TextButton(
+          IconButton(
+            icon: Icon(Icons.edit),
+            tooltip: '수정하기',
             onPressed: () {
               setState(() => isEdit = true);
             },
-            child: Text('수정하기'),)
+          ),
         ],
       );
     }

@@ -17,7 +17,10 @@ class Nav2App extends StatelessWidget {
     return GetMaterialApp(
       title: 'practice project',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
+        primaryColor: Colors.amber[500],
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.amber,
+        ),
         scaffoldBackgroundColor: Colors.indigo[900],
       ),
       defaultTransition: Transition.native,

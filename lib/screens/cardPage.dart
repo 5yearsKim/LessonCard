@@ -56,12 +56,12 @@ class CardPageWrapper extends StatelessWidget {
         Container(
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(10),
+          width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
-          child: CardNote(),
-          // child: Text('hello'),
+          child: CardNote(),          // child: Text('hello'),
         ),
       ],
     );
@@ -119,6 +119,16 @@ class _AddTrackState extends State<AddTrack> {
   TextEditingController nameTcr = TextEditingController();
 
   dynamic info = null;
+
+  @override
+  void initState() {
+    super.initState();
+    nameTcr.addListener(() {
+      if (nameTcr.text == '') {
+        setState(() => info = null);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
