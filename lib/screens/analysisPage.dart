@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 //custom
 import 'package:myapp/controller.dart';
@@ -17,14 +16,16 @@ class AnalysisPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('analysis'),
       ),
-      body: Container(
-        margin: EdgeInsets.all(10.0),
-        padding: EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(3.0),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(5.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: AnalysisContent(),
         ),
-        child: AnalysisContent(),
       ),
     );
   }
@@ -35,9 +36,6 @@ class AnalysisContent extends StatelessWidget {
   late final keyOrder;
   late final colorDict;
   AnalysisContent() {
-    ctrl.bringAllStamp();
-    ctrl.bringSubjectName();
-
     keyOrder = ctrl.report.keys.toList()
       ..sort((a, b) {
         int result = (ctrl.report[a]['cnt']).compareTo(ctrl.report[b]['cnt']);
@@ -54,23 +52,22 @@ class AnalysisContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<Controller>(builder: (_) {
-      return Column(
-        children: [
-          for (var k in keyOrder)
-            Container(
-                margin: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.amber[50],
-                ),
-                child: SubjectAnalysis(
-                  sbjName: k,
-                  maxCnt: ctrl.report[keyOrder[0]]['cnt'],
-                  color: colorDict[k]['color'],
-                )),
-        ],
-      );
-    });
+    return Column(
+      children: [
+        for (var k in keyOrder)
+          Container(
+              margin: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.amber[50],
+              ),
+              child: SubjectAnalysis(
+                sbjName: k,
+                maxCnt: ctrl.report[keyOrder[0]]['cnt'],
+                color: colorDict[k]['color'],
+              )),
+      ],
+    );
   }
 }
 
@@ -90,26 +87,36 @@ class SubjectAnalysis extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
+        Flexible(
+          flex: 1,
           child: Text('$sbjName', style: TextStyle(color: _color)),
         ),
-        Container(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Container(
-                width: (item['cnt'] / maxCnt) * 200,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: _color,
-                  borderRadius: BorderRadius.circular(20),
+        Flexible(
+          flex: 3,
+          child: Container(
+            padding: EdgeInsets.all(5.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: 30.0 + (item['cnt'] / maxCnt) * 200,
+                  padding: EdgeInsets.fromLTRB(0, 5, 10, 5),
+                  decoration: BoxDecoration(
+                    color: _color,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text('총 ${item['cnt']}번', 
+                    style: TextStyle(
+                      color: Colors.white,
+                    )
+                  ),
                 ),
-              ),
-              Text('practice count ${item['cnt']}'),
-              Text('average practice time per song = ${item['avgSec']}'),
-            ],
+                Text('한곡 평균 길이: ${item['avgSec']}초'),
+              ],
+            ),
           ),
-        )
+        ),
       ],
     );
   }

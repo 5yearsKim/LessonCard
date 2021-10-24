@@ -131,6 +131,13 @@ class _AddTrackState extends State<AddTrack> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    ctrl.bringAllStamp();
+    ctrl.bringSubjectName();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: isClicked

@@ -7,35 +7,52 @@ import 'package:intl/intl.dart';
 
 //custom
 import 'package:myapp/controller.dart';
-import 'package:myapp/tools/text.dart';
+import 'package:myapp/utils/misc.dart';
 // import 'package:myapp/dbHelper.dart';
+import 'package:myapp/utils/time.dart';
 
 class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-          children: [
-            Container(
-              child: MyCalender(),
+        child: Column(
+      children: [
+        Container(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {
+              Get.toNamed('/analysis');
+            },
+            child: Text('데이터 분석'),
+          )
+        ),
+        Container(
+          child: MyCalender(),
+          margin: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(5.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        InkWell(
+          onTap: () async {
+            await ctrl.insertCard('test');
+            Get.toNamed('/card');
+          },
+          child: Container(
+              child: ScheduleBox(),
+              width: double.infinity,
               margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(5.0),
+              padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            Container(
-                child: ScheduleBox(),
-                margin: EdgeInsets.all(10.0),
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ))
-          ],
-        ));
+              )),
+        ),
+      ],
+    ));
   }
 }
 
@@ -96,7 +113,8 @@ class _MyCalenderState extends State<MyCalender> {
           //     borderRadius: BorderRadius.circular(10)
           //   ),
           // ),
-          selectedDayPredicate: (DateTime date) => isSameDay(date, ctrl.selectedDay),
+          selectedDayPredicate: (DateTime date) =>
+              isSameDay(date, ctrl.selectedDay),
         ),
       ),
     );
@@ -105,38 +123,66 @@ class _MyCalenderState extends State<MyCalender> {
 
 class ScheduleBox extends StatelessWidget {
   ScheduleBox({Key? key}) : super(key: key);
-  final Controller ctrl = Get.find();
   // final DBHelper dbCtrl = Get.find();
+  final Controller ctrl = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          child: GetBuilder<Controller>(builder: (_) => Text('${ctrl.selectedDay}')),
+          child:
+              GetBuilder<Controller>(
+                builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')
+              ),
         ),
         Container(
-            child: ElevatedButton(
-          child: Text('move to lecture card'),
-          onPressed: () async {
-            await ctrl.insertCard('test');
-            Get.toNamed('/card');
-          },
-        )),
-        GetBuilder<Controller>(builder: (_) {
-          return Wrap(
-            spacing: 8.0, // gap between adjacent chips
-            runSpacing: 4.0, // gap between lines
-            children: [
-              for (final item in ctrl.trackList)
-                ColorText(item['subject_name'], item['color'])
-            ],
-          );
-        }),
-        Container(child: GetBuilder<Controller>(builder: (_) {
-          return ctrl.todayCard == null ? Text('') : Text('note: ${ctrl.todayCard['note']}');
-        })),
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: GetBuilder<Controller>(builder: (_) {
+            return Wrap(
+              spacing: 8.0, // gap between adjacent chips
+              runSpacing: 4.0, // gap between lines
+              children: [
+                for (final item in ctrl.trackList)
+                  Container(
+                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: code2color(item['color']),
+                      ),
+                      child: Text(item['subject_name'],
+                          style: TextStyle(color: Colors.white))),
+              ],
+            );
+          }),
+        ),
+
+        // note
+        Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular((10)),
+                border: Border.all(
+                  width: 1,
+                  color: Theme.of(context).primaryColor,
+                )),
+            child: Column(
+              children: [
+                Text(
+                  '연습 일지',
+                  style: TextStyle(
+                    color: Colors.indigo[900],
+                  ),
+                ),
+                GetBuilder<Controller>(builder: (_) {
+                  return ctrl.todayCard == null
+                      ? Text('')
+                      : Text('${ctrl.todayCard['note']}');
+                }),
+              ],
+            )),
       ],
     );
   }
 }
-
