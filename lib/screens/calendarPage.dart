@@ -19,38 +19,33 @@ class CalendarPage extends StatelessWidget {
         child: Column(
       children: [
         Container(
-          alignment: Alignment.centerRight,
-          child: TextButton(
-            onPressed: () {
-              Get.toNamed('/analysis');
-            },
-            child: Text('데이터 분석'),
-          )
-        ),
-        Container(
           child: MyCalender(),
-          margin: EdgeInsets.all(10.0),
-          padding: EdgeInsets.all(5.0),
+          padding: EdgeInsets.all(15.0),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(40),
+            ),
           ),
         ),
-        InkWell(
-          onTap: () async {
-            await ctrl.insertCard('test');
-            Get.toNamed('/card');
-          },
-          child: Container(
-              child: ScheduleBox(),
-              width: double.infinity,
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              )),
-        ),
+        Container(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.insights),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.indigo[700],
+                onPrimary: Colors.amber[300],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              onPressed: () {
+                Get.toNamed('/analysis');
+              },
+              label: Text('데이터 분석'),
+            )),
+        MoveCard(),
       ],
     ));
   }
@@ -113,11 +108,70 @@ class _MyCalenderState extends State<MyCalender> {
           //     borderRadius: BorderRadius.circular(10)
           //   ),
           // ),
-          selectedDayPredicate: (DateTime date) =>
-              isSameDay(date, ctrl.selectedDay),
+          selectedDayPredicate: (DateTime date) => isSameDay(date, ctrl.selectedDay),
         ),
       ),
     );
+  }
+}
+
+class MoveCard extends StatelessWidget {
+  MoveCard({Key? key}) : super(key: key);
+  final Controller ctrl = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<Controller>(builder: (_) {
+      bool hasCard = ctrl.todayCard != null && !ctrl.todayCard['note'].isEmpty;
+      if (hasCard) {
+        return InkWell(
+          onTap: () async {
+            await ctrl.insertCard('test');
+            Get.toNamed('/card');
+          },
+          child: Container(
+              child: ScheduleBox(),
+              width: double.infinity,
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(20),
+              )),
+        );
+      }
+      return Container(
+        margin: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(children: [
+          GetBuilder<Controller>(builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')),
+          Text('아직 연습 카드가 없어요. 연습카드를 추가해보세요.'),
+          ClipOval(
+            child: Material(
+              color: Colors.amber, // Button color
+              child: InkWell(
+                splashColor: Colors.indigo[900], // Splash color
+                onTap: () async {
+                  await ctrl.insertCard('test');
+                  Get.toNamed('/card');
+                },
+                child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Icons.add,
+                      size: 30,
+                      color: Colors.white,
+                    )),
+              ),
+            ),
+          )
+        ]),
+      );
+    });
   }
 }
 
@@ -126,62 +180,78 @@ class ScheduleBox extends StatelessWidget {
   // final DBHelper dbCtrl = Get.find();
   final Controller ctrl = Get.find();
 
+  Widget wrapSubject() {
+    return Container(
+      // margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+      width: double.infinity,
+      padding: EdgeInsets.all(10),
+      alignment: Alignment.center,
+      child: GetBuilder<Controller>(builder: (_) {
+        return Wrap(
+          spacing: 8.0, // gap between adjacent chips
+          runSpacing: 4.0, // gap between lines
+          children: [
+            for (final item in ctrl.trackList)
+              Container(
+                  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: code2color(item['color']),
+                  ),
+                  child: Text(item['subject_name'], style: TextStyle(color: Colors.white))),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget todayNote() {
+    return GetBuilder<Controller>(builder: (_) {
+      bool hasNote = ctrl.todayCard != null && !ctrl.todayCard['note'].isEmpty;
+      if (!hasNote) {
+        return Container();
+      }
+      return Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Text(
+                '연습 일지',
+                style: TextStyle(
+                  color: Colors.indigo[900],
+                ),
+              ),
+              Text('${ctrl.todayCard['note']}'),
+            ],
+          ));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          child:
-              GetBuilder<Controller>(
-                builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')
-              ),
+          margin: EdgeInsets.all(10),
+          child: GetBuilder<Controller>(builder: (_) => Text('${datePrettify(ctrl.selectedDay)}',
+            style: TextStyle(color: Colors.indigo[900]),
+          )),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: GetBuilder<Controller>(builder: (_) {
-            return Wrap(
-              spacing: 8.0, // gap between adjacent chips
-              runSpacing: 4.0, // gap between lines
-              children: [
-                for (final item in ctrl.trackList)
-                  Container(
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: code2color(item['color']),
-                      ),
-                      child: Text(item['subject_name'],
-                          style: TextStyle(color: Colors.white))),
-              ],
-            );
-          }),
-        ),
-
-        // note
-        Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular((10)),
-                border: Border.all(
-                  width: 1,
-                  color: Theme.of(context).primaryColor,
-                )),
-            child: Column(
-              children: [
-                Text(
-                  '연습 일지',
-                  style: TextStyle(
-                    color: Colors.indigo[900],
-                  ),
-                ),
-                GetBuilder<Controller>(builder: (_) {
-                  return ctrl.todayCard == null
-                      ? Text('')
-                      : Text('${ctrl.todayCard['note']}');
-                }),
-              ],
-            )),
+          // margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            children: [
+              wrapSubject(),
+              todayNote()
+            ],
+          ),
+        )
       ],
     );
   }

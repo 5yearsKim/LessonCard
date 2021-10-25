@@ -22,17 +22,16 @@ class TrackButton extends StatefulWidget {
 
 class _TrackButtonState extends State<TrackButton> {
   final Controller ctrl = Get.find();
-
   get track {
     return ctrl.trackList[widget.i];
   }
 
   get trackColor {
-    final baseColor = Colors.blue;
-    if (track['color'] == null || track['color'].isEmpty) {
-      return baseColor;
-    }
-    return Color(int.parse(track['color']));
+    return code2color(track['color']);
+  }
+
+  get textColor {
+    return trackColor.computeLuminance() >= 0.7 ? Colors.black.withOpacity(0.7) : Colors.white;
   }
 
   void openEditPage(BuildContext context) async {
@@ -49,14 +48,19 @@ class _TrackButtonState extends State<TrackButton> {
   Widget build(BuildContext context) {
     return Container(
         child: GetBuilder<Controller>(
-            builder: (_) => TextButton(
+            builder: (_) => ElevatedButton(
                   onPressed: () {
                     openEditPage(context);
                   },
-                  style: TextButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     primary: trackColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    )
                   ),
-                  child: Text(track['subject_name']),
+                  child: Text(track['subject_name'],
+                    style: TextStyle(color: textColor),
+                  ),
                 )));
   }
 }
@@ -73,7 +77,7 @@ class EditTrack extends StatefulWidget {
 class _EditTrackState extends State<EditTrack> {
   final Controller ctrl = Get.find();
   TextEditingController nameTcr = TextEditingController();
-  Color _color = Colors.blue;
+  late Color _color;
   int maxStamp = 7;
   String stampName = 'cat';
 

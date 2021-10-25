@@ -42,7 +42,7 @@ class CardPageWrapper extends StatelessWidget {
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
             color: Colors.white,
           ),
           child: Column(
@@ -58,10 +58,10 @@ class CardPageWrapper extends StatelessWidget {
           padding: EdgeInsets.all(10),
           width: double.infinity,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
             color: Colors.white,
           ),
-          child: CardNote(),          // child: Text('hello'),
+          child: CardNote(),
         ),
       ],
     );
@@ -151,7 +151,6 @@ class _AddTrackState extends State<AddTrack> {
                       style: TextStyle(
                         color: info == null ? null : code2color(info['color']),
                       ),
-                      
                     ),
                     suggestionsCallback: (pattern) {
                       return ctrl.subjectName.where(

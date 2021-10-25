@@ -20,6 +20,7 @@ class AnalysisPage extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.all(15.0),
           padding: EdgeInsets.all(5.0),
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
@@ -52,6 +53,11 @@ class AnalysisContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (keyOrder.isEmpty) {
+      return Container(
+        child: Text('아직 연습 내역이 없어요.'),
+      );
+    }
     return Column(
       children: [
         for (var k in keyOrder)

@@ -4,37 +4,39 @@ import 'package:get/get.dart';
 
 // custom
 import 'package:myapp/controller.dart';
+import 'package:myapp/utils/time.dart';
 
 class CardNote extends StatelessWidget {
-  const CardNote({ Key? key }) : super(key: key);
+  CardNote({Key? key}) : super(key: key);
+  final Controller ctrl = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('연습일지', 
+        Text(
+          '연습일지',
           style: TextStyle(
             color: Colors.indigo[900],
           ),
         ),
         Container(
-          alignment: Alignment.center,
+          alignment: Alignment.centerRight,
+          child: GetBuilder<Controller>(builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')),
+        ),
+        Container(
           padding: EdgeInsets.all(10),
           width: double.infinity,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              width: 1,
-              color: Theme.of(context).primaryColor,
-            )
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.black.withOpacity(0.1),
           ),
-          child: CardNoteContent()
-        ,)
+          child: CardNoteContent(),
+        ),
       ],
     );
   }
 }
- 
 
 class CardNoteContent extends StatefulWidget {
   const CardNoteContent({Key? key}) : super(key: key);
@@ -65,9 +67,7 @@ class _CardNoteContentState extends State<CardNoteContent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            decoration: InputDecoration(
-              labelText: '연습일지를 적어보세요!'
-            ),
+            decoration: InputDecoration(labelText: '연습일지를 적어보세요!'),
             controller: noteTcr,
           ),
           Row(
@@ -92,17 +92,19 @@ class _CardNoteContentState extends State<CardNoteContent> {
         ],
       );
     } else {
-      return Wrap(
-        direction: Axis.horizontal,
-        crossAxisAlignment: WrapCrossAlignment.center,
+      return Stack(
+        clipBehavior: Clip.none,
         children: [
-          Text(noteTcr.text),
-          IconButton(
-            icon: Icon(Icons.edit),
-            tooltip: '수정하기',
+          Container(
+            alignment: Alignment.center,
+            child: Text(noteTcr.text),
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.edit),
             onPressed: () {
               setState(() => isEdit = true);
             },
+            backgroundColor: Colors.blueGrey,
           ),
         ],
       );

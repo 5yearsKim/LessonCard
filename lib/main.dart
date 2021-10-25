@@ -67,9 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _asyncMethod() async {
       await dbCtrl.initDb();
-      setState(() => isReady = true);
       ctrl.bringAllStamp();
       ctrl.bringSubjectName();
+      setState(() => isReady = true);
     }
     _asyncMethod();
   }
