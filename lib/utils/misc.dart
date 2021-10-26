@@ -10,3 +10,7 @@ Color code2color(colorCode, {defaultColor: Colors.blue}) {
   }
   return _color;
 }
+
+Color textOnColor(Color color) {
+  return color.computeLuminance() >= 0.7 ? Colors.black.withOpacity(0.8) : Colors.white;
+}

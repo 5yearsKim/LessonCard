@@ -10,7 +10,6 @@ import 'package:myapp/tools/animalPicker.dart';
 import 'package:myapp/utils/stamp.dart';
 import 'package:myapp/utils/misc.dart';
 
-
 // Track Button
 class TrackButton extends StatefulWidget {
   final int i;
@@ -31,7 +30,7 @@ class _TrackButtonState extends State<TrackButton> {
   }
 
   get textColor {
-    return trackColor.computeLuminance() >= 0.7 ? Colors.black.withOpacity(0.7) : Colors.white;
+    return textOnColor(trackColor);
   }
 
   void openEditPage(BuildContext context) async {
@@ -39,7 +38,16 @@ class _TrackButtonState extends State<TrackButton> {
         context: context,
         builder: (_) {
           return Dialog(
-            child: EditTrack(widget.i),
+            insetPadding: EdgeInsets.all(30),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: EditTrack(widget.i),
+              ),
+            ),
           );
         });
   }
@@ -47,21 +55,23 @@ class _TrackButtonState extends State<TrackButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: GetBuilder<Controller>(
-            builder: (_) => ElevatedButton(
-                  onPressed: () {
-                    openEditPage(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: trackColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    )
-                  ),
-                  child: Text(track['subject_name'],
-                    style: TextStyle(color: textColor),
-                  ),
-                )));
+      child: GetBuilder<Controller>(
+        builder: (_) => ElevatedButton(
+          onPressed: () {
+            openEditPage(context);
+          },
+          style: ElevatedButton.styleFrom(
+              primary: trackColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              )),
+          child: Text(
+            track['subject_name'],
+            style: TextStyle(color: textColor),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -165,101 +175,130 @@ class _EditTrackState extends State<EditTrack> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('트랙 이름:'),
-            Expanded(
-              child: TextField(
-                controller: nameTcr,
+    const lw = 4;
+    const rw = 6;
+    return Column(mainAxisSize: MainAxisSize.min,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: lw,
+                child: Center(child: Text('트랙 이름')),
               ),
-            )
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('테마 컬러: '),
-            Container(
-              child: IconButton(
-                icon: Icon(Icons.circle),
-                iconSize: 15,
-                color: _color,
-                tooltip: '컬러를 선택해주세요!',
+              Expanded(
+                flex: rw,
+                child: TextField(
+                  controller: nameTcr,
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: lw,
+                child: Center(child: Text('테마 컬러 ')),
+              ),
+              Expanded(
+                flex: rw,
+                child: Container(
+                  child: IconButton(
+                    icon: Icon(Icons.circle),
+                    iconSize: 25,
+                    color: _color,
+                    tooltip: '컬러를 선택해주세요!',
+                    onPressed: () {
+                      openColorPicker(context);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: lw,
+                child: Center(child: Text('도장 개수')),
+              ),
+              Expanded(
+                flex: rw,
+                child: NumericStepButton(
+                    minValue: 0,
+                    maxValue: 10,
+                    initValue: maxStamp,
+                    onChanged: (value) {
+                      setState(() => maxStamp = value);
+                    }),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                flex: lw,
+                child: Center(
+                  child: Text('도장 모양'),
+                ),
+              ),
+              Expanded(
+                flex: rw,
+                child: IconButton(
+                  icon: Image.asset(animalDict[stampName] ?? (animalDict['bear'] as String)),
+                  onPressed: () {
+                    openAnimlPicker(context);
+                  },
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton.icon(
+                icon: Icon(Icons.delete),
                 onPressed: () {
-                  openColorPicker(context);
+                  openDeleteConfirm(context, () => Navigator.of(context).pop());
                 },
+                label: Text('삭제하기'),
               ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('도장 개수'),
-            NumericStepButton(
-                minValue: 0,
-                maxValue: 10,
-                initValue: maxStamp,
-                onChanged: (value) {
-                  setState(() {
-                    maxStamp = value;
-                  });
-                })
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('도장 모양'),
-            IconButton(
-              icon: Image.asset(animalDict[stampName] ?? (animalDict['bear'] as String)),
-              onPressed: () {
-                openAnimlPicker(context);
-              },
-            )
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () {
-                openDeleteConfirm(context, () => Navigator.of(context).pop());
-              },
-              child: Text('삭제하기'),
-            ),
-          ],
-        ),
-        // submit button
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('취소'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await ctrl.updateTrack(
-                  track['id'],
-                  subjectName: nameTcr.text,
-                  color: _color,
-                  maxStamp: maxStamp,
-                  stampName: stampName,
-                );
-                Navigator.of(context).pop();
-              },
-              child: Text('수정하기'),
-            ),
-          ],
-        )
-      ]),
-    );
+            ],
+          ),
+          // submit button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: StadiumBorder(),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('취소'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  shape: StadiumBorder(),
+                ),
+                onPressed: () async {
+                  await ctrl.updateTrack(
+                    track['id'],
+                    subjectName: nameTcr.text,
+                    color: _color,
+                    maxStamp: maxStamp,
+                    stampName: stampName,
+                  );
+                  Navigator.of(context).pop();
+                },
+                child: Text('저장'),
+              ),
+            ],
+          )
+        ]);
   }
 }

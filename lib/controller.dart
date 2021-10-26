@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'dbHelper.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 typedef ReportDict = Map<String, Map<int, List<dynamic>>>;
 
@@ -23,6 +24,29 @@ class Controller extends GetxController {
       ret[sbjName] = anal;
     }
     return ret;
+  }
+
+  get reportMax{
+    int maxCnt = 0;
+    double maxAvgSec = 0;
+    double maxPracTime = 0;
+
+    for (var v in report.values) {
+      print('hh');
+      print(v);
+      if (v['cnt'] != null) 
+        maxCnt = max(v['cnt'], maxCnt);
+      if (v['avgSec'] != null)
+        maxAvgSec = max(v['avgSec'], maxAvgSec);
+      if (v['pracTime'] != null)
+        maxPracTime = max(v['pracTime'], maxPracTime);
+        print(v['pracTime']);
+    }
+    if (maxAvgSec == 0)
+      maxAvgSec = double.infinity;
+    if (maxPracTime == 0) 
+      maxPracTime = double.infinity;
+    return {'cnt': maxCnt, 'avgSec': maxAvgSec, 'pracTime': maxPracTime};
   }
 
   get formatDay {
@@ -203,7 +227,8 @@ class Controller extends GetxController {
 dynamic analyzer(Map<int, List<dynamic>> dict) {
   List<dynamic> timeDiffList = [];
   int cnt = 0;
-  double? avgSec = null; 
+  double? avgSec = null;
+  double? totalPrac = null;
   for (var trackId in dict.keys) {
     cnt += dict[trackId]!.length;
     List<dynamic> itemList = dict[trackId]!;
@@ -223,12 +248,16 @@ dynamic analyzer(Map<int, List<dynamic>> dict) {
     final startp = len ~/ 3;
     final endp = 2 * len ~/ 3;
     num sum = 0;
-    for (var i = startp; i < endp; i ++) {
+    for (var i = startp; i <= endp; i ++) {
       sum += timeDiffList[i];
     }
-    avgSec = sum / (endp - startp);
+    avgSec = sum / (endp - startp + 1);
+  } else if (timeDiffList.length > 0){
+    num sum = timeDiffList.reduce((a, b) => a + b);
+    avgSec = sum / timeDiffList.length;
   }
+  totalPrac = avgSec == null ? null : avgSec * cnt ;
   // print(timeDiffList);
-  return {'cnt': cnt, 'avgSec': avgSec };
+  return {'cnt': cnt, 'avgSec': avgSec, 'pracTime': totalPrac };
 }
 

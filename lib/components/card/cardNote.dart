@@ -69,18 +69,29 @@ class _CardNoteContentState extends State<CardNoteContent> {
           TextField(
             decoration: InputDecoration(labelText: '연습일지를 적어보세요!'),
             controller: noteTcr,
+            minLines: 1,
+            maxLines: 6,
+            
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: StadiumBorder(),
+                ),
                 onPressed: () {
                   noteTcr.text = card['note'];
                   setState(() => isEdit = false);
                 },
                 child: Text('취소'),
               ),
-              OutlinedButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.amber,
+                  onPrimary: Colors.white,
+                  shape: StadiumBorder(),
+                ),
                 onPressed: () {
                   ctrl.updateCard(note: noteTcr.text);
                   setState(() => isEdit = false);
@@ -92,21 +103,30 @@ class _CardNoteContentState extends State<CardNoteContent> {
         ],
       );
     } else {
-      return Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Text(noteTcr.text),
-          ),
-          FloatingActionButton(
-            child: Icon(Icons.edit),
-            onPressed: () {
-              setState(() => isEdit = true);
-            },
-            backgroundColor: Colors.blueGrey,
-          ),
-        ],
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: 50,
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: Text(noteTcr.text),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: FloatingActionButton.small(
+                onPressed: () {
+                  setState(() => isEdit = true);
+                },
+                backgroundColor: Colors.white,
+                child: Icon(Icons.edit, size: 30),
+              ),
+            ),
+          ],
+        ),
       );
     }
   }

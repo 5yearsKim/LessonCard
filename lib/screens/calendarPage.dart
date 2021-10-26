@@ -159,13 +159,14 @@ class MoveCard extends StatelessWidget {
                   Get.toNamed('/card');
                 },
                 child: SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: Icon(
-                      Icons.add,
-                      size: 30,
-                      color: Colors.white,
-                    )),
+                  width: 40,
+                  height: 40,
+                  child: Icon(
+                    Icons.add,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           )
@@ -193,12 +194,20 @@ class ScheduleBox extends StatelessWidget {
           children: [
             for (final item in ctrl.trackList)
               Container(
-                  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: code2color(item['color']),
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: code2color(item['color']),
+                ),
+                child: Text(
+                  item['subject_name'],
+                  style: TextStyle(
+                    color: textOnColor(
+                      code2color(item['color']),
+                    ),
                   ),
-                  child: Text(item['subject_name'], style: TextStyle(color: Colors.white))),
+                ),
+              ),
           ],
         );
       }),
@@ -235,9 +244,11 @@ class ScheduleBox extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.all(10),
-          child: GetBuilder<Controller>(builder: (_) => Text('${datePrettify(ctrl.selectedDay)}',
-            style: TextStyle(color: Colors.indigo[900]),
-          )),
+          child: GetBuilder<Controller>(
+              builder: (_) => Text(
+                    '${datePrettify(ctrl.selectedDay)}',
+                    style: TextStyle(color: Colors.indigo[900]),
+                  )),
         ),
         Container(
           // margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -246,10 +257,7 @@ class ScheduleBox extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
-            children: [
-              wrapSubject(),
-              todayNote()
-            ],
+            children: [wrapSubject(), todayNote()],
           ),
         )
       ],
