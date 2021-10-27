@@ -96,11 +96,20 @@ class Stamp extends StatelessWidget {
                 children: [
                   Text('${item['created_at']} 에 생성'),
                   Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey[200],
+                    ),
                     child: Column(
                       children: [
+                        Text('연습 노트'),
                         TextField(
-                          decoration: InputDecoration(border: OutlineInputBorder(), labelText: '메모'),
+                          decoration:
+                              InputDecoration(labelText: '연습노트를 적어보세요!'),
                           controller: noteTcr,
+                          minLines: 1,
+                          maxLines: 6,
                         ),
                       ],
                     ),
@@ -108,27 +117,37 @@ class Stamp extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextButton(
+                      TextButton.icon(
+                        icon: Icon(Icons.delete),
                         onPressed: () {
-                          if (item != null) ctrl.deleteStamp(trackId, item['id']);
+                          if (item != null)
+                            ctrl.deleteStamp(trackId, item['id']);
                           Navigator.of(context).pop();
                         },
-                        child: Text('삭제하기'),
+                        label: Text('삭제하기'),
                       ),
                     ],
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextButton(
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          shape: StadiumBorder(),
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                         child: Text('취소'),
                       ),
-                      TextButton(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: StadiumBorder(),
+                          onPrimary: Colors.white,
+                        ),
                         onPressed: () {
-                          ctrl.updateStamp(trackId, item['id'], note: noteTcr.text);
+                          ctrl.updateStamp(trackId, item['id'],
+                              note: noteTcr.text);
                           Navigator.of(context).pop();
                         },
                         child: Text('저장'),
