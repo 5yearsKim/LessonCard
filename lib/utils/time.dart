@@ -8,9 +8,19 @@ String datePrettify(DateTime date, {lang: 'ko', withYear: false}) {
   }
 }
 
+String timePrettify(DateTime date, {withLang: false}) {
+  String timeString = DateFormat.Hms().format(date);
+  if (withLang) {
+    final timeArr = timeString.split(':');
+    return '${timeArr[0]}시 ${timeArr[1]}분 ${timeArr[2]}초';
+  } else {
+    return timeString;
+  }
+}
+
 String secondsPrettify(double seconds) {
   if (seconds < 60) {
-    return '${seconds}초';
+    return '${seconds.toStringAsFixed(1)}초';
   }
   int mins = seconds ~/ 60;
   if (mins < 60) {

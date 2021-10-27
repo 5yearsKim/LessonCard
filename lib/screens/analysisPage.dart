@@ -87,11 +87,21 @@ class _AnalysisContentState extends State<AnalysisContent> {
             double _portion = 0;
             String _label = '';
             if (metric == 'avgSec') {
-              _portion = item['avgSec'] / maxVal['avgSec'];
-              _label = secondsPrettify(item['avgSec']);
+              if (item['avgSec'] == null) {
+                _portion = 0;
+                _label = '측정 불가';
+              } else {
+                _portion = item['avgSec'] / maxVal['avgSec'];
+                _label = secondsPrettify(item['avgSec']);
+              }
             } else if (metric == 'pracTime') {
-              _portion = item['pracTime'] / maxVal['pracTime'];
-              _label = secondsPrettify(item['pracTime']); 
+              if (item['pracTime'] == null) {
+                _portion = 0;
+                _label = '측정 불가';
+              } else {
+                _portion = item['pracTime'] / maxVal['pracTime'];
+                _label = secondsPrettify(item['pracTime']); 
+              }
             } else {
               // cnt
               _portion = item['cnt'] / maxVal['cnt'];
@@ -144,51 +154,6 @@ class SelectMetric extends StatelessWidget {
   }
 }
 
-// class AnalysisContent extends StatelessWidget {
-//   final Controller ctrl = Get.find();
-//   late final keyOrder;
-//   late final colorDict;
-//   AnalysisContent() {
-//     keyOrder = ctrl.report.keys.toList()
-//       ..sort((a, b) {
-//         int result = (ctrl.report[a]['cnt']).compareTo(ctrl.report[b]['cnt']);
-//         return -result;
-//       });
-
-//     // color dict init
-//     var tempDict = {};
-//     ctrl.subjectName.forEach((item) {
-//       tempDict[item['subject_name']] = item;
-//     });
-//     colorDict = tempDict;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     if (keyOrder.isEmpty) {
-//       return Container(
-//         child: Text('아직 연습 내역이 없어요.'),
-//       );
-//     }
-//     return Column(
-//       children: [
-//         for (var k in keyOrder)
-//           Container(
-//               margin: EdgeInsets.all(5),
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(10.0),
-//                 color: Colors.amber[50],
-//               ),
-//               child: SubjectAnalysis(
-//                 sbjName: k,
-//                 maxCnt: ctrl.report[keyOrder[0]]['cnt'],
-//                 color: colorDict[k]['color'],
-//               )),
-//       ],
-//     );
-//   }
-// }
-
 class SubjectAnalysis extends StatefulWidget {
   final String sbjName;
   final String label;
@@ -211,6 +176,10 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
 
   get _width {
     return 20 + 200 * widget.portion;
+  }
+
+  get lightColor {
+    return lightenColor(widget._color, amount: 0.3);
   }
 
   @override
@@ -237,14 +206,18 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
           child: Container(
             padding: EdgeInsets.all(2),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: lightColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
             ),
-            child: Text(widget.sbjName),
+            child: Text(widget.sbjName,
+              style: TextStyle(
+                color: textOnColor(lightColor),
+              ),
+            ),
           )
         ),
         AnimatedContainer(

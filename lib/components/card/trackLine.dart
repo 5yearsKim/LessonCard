@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 // custom
 import 'package:myapp/controller.dart';
 import 'package:myapp/utils/stamp.dart';
+import 'package:myapp/utils/time.dart';
 
 class TrackLine extends StatelessWidget {
   final int i;
@@ -84,6 +85,7 @@ class Stamp extends StatelessWidget {
     showDialog(
         context: context,
         builder: (BuildContext context) {
+          DateTime dt = DateTime.parse(item['created_at']);
           return Dialog(
             insetPadding: EdgeInsets.all(30),
             shape: RoundedRectangleBorder(
@@ -94,7 +96,8 @@ class Stamp extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('${item['created_at']} 에 생성'),
+                  Text(datePrettify(dt)),
+                  Text(timePrettify(dt, withLang: true)),
                   Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -191,13 +194,15 @@ class Stamp extends StatelessWidget {
   }
 
   Widget Filled(BuildContext context) {
+    DateTime dt = DateTime.parse(item['created_at']);
+    String renderTime = timePrettify(dt);
     return GestureDetector(
       onTap: () {
         alertModify(context);
       },
       child: Tooltip(
         // message: item['${item['note']}(${item['created_at']})'],
-        message: '${item['note']}(${item['created_at']})',
+        message: '${item['note']}(${renderTime})',
         waitDuration: Duration(),
         child: StampImage(
           stampName: stampName,
