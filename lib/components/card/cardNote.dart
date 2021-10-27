@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 // custom
 import 'package:myapp/controller.dart';
 import 'package:myapp/utils/time.dart';
+import 'package:myapp/config.dart';
 
 class CardNote extends StatelessWidget {
   CardNote({Key? key}) : super(key: key);
@@ -16,20 +17,26 @@ class CardNote extends StatelessWidget {
       children: [
         Text(
           '연습일지',
-          style: TextStyle(
-            color: Colors.indigo[900],
+          style: Theme.of(context).textTheme.headline6!.copyWith(
+            color: textColor,
+            fontWeight: FontWeight.bold,
           ),
         ),
         Container(
           alignment: Alignment.centerRight,
-          child: GetBuilder<Controller>(builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')),
+          margin: EdgeInsets.fromLTRB(0, 0, 5, 10),
+          child: GetBuilder<Controller>(builder: (_) {
+            return Text('${datePrettify(ctrl.selectedDay)}',
+              style: Theme.of(context).textTheme.subtitle1,
+            );
+          }),
         ),
         Container(
           padding: EdgeInsets.all(10),
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.grey[200],
           ),
           child: CardNoteContent(),
         ),
@@ -111,7 +118,12 @@ class _CardNoteContentState extends State<CardNoteContent> {
           children: [
             Container(
               alignment: Alignment.center,
-              child: Text(noteTcr.text),
+              padding: EdgeInsets.all(10),
+              child: Text(noteTcr.text,
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  color: Colors.grey[800],
+                ),
+              ),
             ),
             Positioned(
               bottom: 0,

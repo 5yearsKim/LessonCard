@@ -179,7 +179,7 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
   }
 
   get lightColor {
-    return lightenColor(widget._color, amount: 0.3);
+    return lightenColor(widget._color, amount: 0.4);
   }
 
   @override

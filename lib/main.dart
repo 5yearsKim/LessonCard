@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 // import 'tutorialPage.dart';
 // import 'designPractice.dart';
 import 'package:get/get.dart';
@@ -10,7 +12,9 @@ import 'controller.dart';
 import 'dbHelper.dart';
 import 'config.dart';
 
-void main() => runApp(Nav2App());
+void main() {
+  initializeDateFormatting().then((_) => runApp(Nav2App()));
+}
 
 class Nav2App extends StatelessWidget {
   @override

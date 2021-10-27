@@ -144,7 +144,6 @@ class _EditTrackState extends State<EditTrack> {
         'color picker',
         MaterialColorPicker(
           onColorChange: (Color color) {
-            print(color);
             setState(() => _color = color);
             // Navigator.of(context).pop();
           },
@@ -190,6 +189,7 @@ class _EditTrackState extends State<EditTrack> {
               Expanded(
                 flex: rw,
                 child: TextField(
+                  textAlign: TextAlign.center,
                   controller: nameTcr,
                 ),
               ),

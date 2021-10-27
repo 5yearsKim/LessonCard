@@ -44,7 +44,7 @@ class CalendarPage extends StatelessWidget {
               onPressed: () {
                 Get.toNamed('/analysis');
               },
-              label: Text('데이터 분석'),
+              label: Text('데이터 분석', style: TextStyle(fontWeight: FontWeight.bold)),
             )),
         MoveCard(),
       ],
@@ -98,19 +98,50 @@ class _MyCalenderState extends State<MyCalender> {
           focusedDay: ctrl.selectedDay,
           onDaySelected: _onDaySelected,
           eventLoader: _getEventsFromDay,
-          // calendarStyle: CalendarStyle(
-          //   isTodayHighlighted: true,
-          //   selectedDecoration: BoxDecoration(
-          //     color: Colors.blue,
-          //     borderRadius: BorderRadius.circular(10)
-          //   ),
-          //   todayDecoration: BoxDecoration(
-          //     color: Colors.purpleAccent,
-          //     borderRadius: BorderRadius.circular(10)
-          //   ),
-          // ),
-          selectedDayPredicate: (DateTime date) =>
-              isSameDay(date, ctrl.selectedDay),
+          selectedDayPredicate: (DateTime date) {
+            return isSameDay(date, ctrl.selectedDay);
+          },
+          calendarStyle: CalendarStyle(
+            isTodayHighlighted: true,
+            selectedDecoration: BoxDecoration(
+              color: Colors.purple[600],
+              shape: BoxShape.circle,
+            ),
+            todayDecoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: primaryColor.withOpacity(0.3),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+              color: primaryColor,
+              shape: BoxShape.circle,
+            ),
+            weekendTextStyle: TextStyle().copyWith(color: Colors.red),
+            holidayTextStyle: TextStyle().copyWith(color: Colors.blue[800]),
+          ),
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+            headerMargin: EdgeInsets.only(left: 40, top: 0, right: 40, bottom: 10),
+            leftChevronIcon: Icon(Icons.arrow_left),
+            rightChevronIcon: Icon(Icons.arrow_right),
+          ),
+          locale: 'ko-KR',
+          calendarBuilders: CalendarBuilders(
+            markerBuilder: (context, date, events) {
+              if (events.isEmpty) {
+                return null;
+              }
+              return Positioned(
+                bottom: 4,
+                right: 1,
+                child: Icon(Icons.check, color: Colors.green),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -128,17 +159,18 @@ class MoveCard extends StatelessWidget {
       if (hasCard) {
         return InkWell(
           onTap: () async {
-            await ctrl.insertCard('test');
+            await ctrl.insertCard('');
             Get.toNamed('/card');
           },
           child: Container(
-              child: ScheduleBox(),
-              width: double.infinity,
-              margin: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(20),
-              )),
+            width: double.infinity,
+            margin: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: Colors.blue[50],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: ScheduleBox(),
+          ),
         );
       }
       return Container(
@@ -146,19 +178,34 @@ class MoveCard extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Column(children: [
-          GetBuilder<Controller>(
-              builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')),
-          Text('아직 연습 카드가 없어요. 연습카드를 추가해보세요.'),
+          GetBuilder<Controller>(builder: (_) {
+            return Text(
+              '${datePrettify(ctrl.selectedDay)}',
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+            );
+          }),
+          Container(
+            margin: EdgeInsets.all(10),
+            child: Text(
+              '아직 연습 카드가 없어요. 연습카드를 추가해보세요.',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    color: Colors.grey[700],
+                  ),
+            ),
+          ),
           ClipOval(
             child: Material(
-              color: Colors.amber, // Button color
+              color: primaryColor, // Button color
               child: InkWell(
-                splashColor: Colors.indigo[900], // Splash color
+                splashColor: secondaryColor, // Splash color
                 onTap: () async {
-                  await ctrl.insertCard('test');
+                  await ctrl.insertCard('');
                   Get.toNamed('/card');
                 },
                 child: SizedBox(
@@ -184,7 +231,7 @@ class ScheduleBox extends StatelessWidget {
   // final DBHelper dbCtrl = Get.find();
   final Controller ctrl = Get.find();
 
-  Widget wrapSubject() {
+  Widget wrapSubject(BuildContext context) {
     return Container(
       // margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
       width: double.infinity,
@@ -199,16 +246,16 @@ class ScheduleBox extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(20),
                   color: code2color(item['color']),
                 ),
                 child: Text(
                   item['subject_name'],
-                  style: TextStyle(
-                    color: textOnColor(
-                      code2color(item['color']),
-                    ),
-                  ),
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: textOnColor(
+                          code2color(item['color']),
+                        ),
+                      ),
                 ),
               ),
           ],
@@ -217,7 +264,7 @@ class ScheduleBox extends StatelessWidget {
     );
   }
 
-  Widget todayNote() {
+  Widget todayNote(context) {
     return GetBuilder<Controller>(builder: (_) {
       bool hasNote = ctrl.todayCard != null && !ctrl.todayCard['note'].isEmpty;
       if (!hasNote) {
@@ -225,17 +272,25 @@ class ScheduleBox extends StatelessWidget {
       }
       return Container(
           width: double.infinity,
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.all(10),
+          // padding: EdgeInsets.all(10),
           child: Column(
             children: [
               Text(
                 '연습 일지',
-                style: TextStyle(
-                  color: Colors.indigo[900],
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Container(
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  '${ctrl.todayCard['note']}',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: Colors.grey[700],
+                      ),
                 ),
               ),
-              Text('${ctrl.todayCard['note']}'),
             ],
           ));
     });
@@ -246,21 +301,21 @@ class ScheduleBox extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.all(10),
+          margin: EdgeInsets.all(6),
           child: GetBuilder<Controller>(
               builder: (_) => Text(
                     '${datePrettify(ctrl.selectedDay)}',
-                    style: TextStyle(color: Colors.indigo[900]),
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: textColor, fontWeight: FontWeight.bold),
                   )),
         ),
         Container(
-          // margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+          padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
-            children: [wrapSubject(), todayNote()],
+            children: [wrapSubject(context), todayNote(context)],
           ),
         )
       ],

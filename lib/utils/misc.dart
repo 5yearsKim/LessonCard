@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:math';
+// custom
+import 'package:myapp/config.dart';
+
 Color code2color(colorCode, {defaultColor: Colors.blue}) {
   var _color;
   try {
@@ -12,14 +16,19 @@ Color code2color(colorCode, {defaultColor: Colors.blue}) {
 }
 
 Color textOnColor(Color color) {
-  return color.computeLuminance() >= 0.65 ? Colors.indigo.shade900 : Colors.white;
+  return color.computeLuminance() >= 0.65 ? textColor : Colors.white;
 }
 
-Color lightenColor(Color color, {double amount: 0.1}) {
-  assert(amount >= 0 && amount <= 1);
+Color lightenColor(Color color, {double amount: 0.3}) {
+  double lighter(num x, num amount) {
+    amount = amount.clamp(1, 5);
+    num newLight = 1 - pow(1 - x, amount);
+    return newLight.toDouble(); 
+  }
 
   final hsl = HSLColor.fromColor(color);
-  final hslLight = hsl.withLightness((hsl.lightness * (1 + amount)).clamp(0.0, 1.0));
+  double newLightness = lighter(hsl.lightness, 1 + amount);
+  final hslLight = hsl.withLightness(newLightness);
 
   return hslLight.toColor();
 }

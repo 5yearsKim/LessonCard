@@ -147,6 +147,8 @@ class _AddTrackState extends State<AddTrack> {
                 Expanded(
                   child: TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
+                      textAlign: TextAlign.center,
+                      maxLength: 16,
                       controller: nameTcr,
                       style: TextStyle(
                         color: info == null ? null : code2color(info['color']),

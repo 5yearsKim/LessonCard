@@ -32,15 +32,12 @@ class Controller extends GetxController {
     double maxPracTime = 0;
 
     for (var v in report.values) {
-      print('hh');
-      print(v);
       if (v['cnt'] != null) 
         maxCnt = max(v['cnt'], maxCnt);
       if (v['avgSec'] != null)
         maxAvgSec = max(v['avgSec'], maxAvgSec);
       if (v['pracTime'] != null)
         maxPracTime = max(v['pracTime'], maxPracTime);
-        print(v['pracTime']);
     }
     if (maxAvgSec == 0)
       maxAvgSec = double.infinity;
