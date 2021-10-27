@@ -88,7 +88,6 @@ class _CardNoteContentState extends State<CardNoteContent> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.amber,
                   onPrimary: Colors.white,
                   shape: StadiumBorder(),
                 ),

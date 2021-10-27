@@ -10,6 +10,7 @@ import 'package:myapp/controller.dart';
 import 'package:myapp/utils/misc.dart';
 // import 'package:myapp/dbHelper.dart';
 import 'package:myapp/utils/time.dart';
+import 'package:myapp/config.dart';
 
 class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();
@@ -34,8 +35,8 @@ class CalendarPage extends StatelessWidget {
             child: ElevatedButton.icon(
               icon: Icon(Icons.insights),
               style: ElevatedButton.styleFrom(
-                primary: Colors.indigo[700],
-                onPrimary: Colors.amber[300],
+                primary: lightenColor(secondaryColor, amount: 0.5),
+                onPrimary: lightenColor(primaryColor, amount: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -108,7 +109,8 @@ class _MyCalenderState extends State<MyCalender> {
           //     borderRadius: BorderRadius.circular(10)
           //   ),
           // ),
-          selectedDayPredicate: (DateTime date) => isSameDay(date, ctrl.selectedDay),
+          selectedDayPredicate: (DateTime date) =>
+              isSameDay(date, ctrl.selectedDay),
         ),
       ),
     );
@@ -147,7 +149,8 @@ class MoveCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(children: [
-          GetBuilder<Controller>(builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')),
+          GetBuilder<Controller>(
+              builder: (_) => Text('${datePrettify(ctrl.selectedDay)}')),
           Text('아직 연습 카드가 없어요. 연습카드를 추가해보세요.'),
           ClipOval(
             child: Material(

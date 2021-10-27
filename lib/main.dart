@@ -8,6 +8,7 @@ import 'screens/analysisPage.dart';
 
 import 'controller.dart';
 import 'dbHelper.dart';
+import 'config.dart';
 
 void main() => runApp(Nav2App());
 
@@ -17,11 +18,13 @@ class Nav2App extends StatelessWidget {
     return GetMaterialApp(
       title: 'practice project',
       theme: ThemeData(
-        primaryColor: Colors.amber[500],
+        primaryColor: primaryColor,
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.amber,
+        ).copyWith(
+          secondary: secondaryColor,
         ),
-        scaffoldBackgroundColor: Colors.indigo[900],
+        scaffoldBackgroundColor: backgroundColor,
       ),
       defaultTransition: Transition.native,
       initialRoute: '/',
