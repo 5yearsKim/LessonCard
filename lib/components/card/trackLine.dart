@@ -85,45 +85,58 @@ class Stamp extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('${item['created_at']} 에 생성'),
-                TextField(
-                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: '메모'),
-                  controller: noteTcr,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        if (item != null) ctrl.deleteStamp(trackId, item['id']);
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('삭제하기'),
+            insetPadding: EdgeInsets.all(30),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('${item['created_at']} 에 생성'),
+                  Container(
+                    child: Column(
+                      children: [
+                        TextField(
+                          decoration: InputDecoration(border: OutlineInputBorder(), labelText: '메모'),
+                          controller: noteTcr,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('취소'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        ctrl.updateStamp(trackId, item['id'], note: noteTcr.text);
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('저장'),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          if (item != null) ctrl.deleteStamp(trackId, item['id']);
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('삭제하기'),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('취소'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          ctrl.updateStamp(trackId, item['id'], note: noteTcr.text);
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('저장'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         });

@@ -192,7 +192,7 @@ class _EditTrackState extends State<EditTrack> {
                 child: TextField(
                   controller: nameTcr,
                 ),
-              )
+              ),
             ],
           ),
           Row(
