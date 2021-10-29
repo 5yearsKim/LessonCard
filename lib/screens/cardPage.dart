@@ -18,12 +18,14 @@ class CardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            '연습카드',
-            style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-          ),
-        ),
+        appBar: MediaQuery.of(context).orientation == Orientation.landscape
+            ? null
+            : AppBar(
+                title: Text(
+                  '연습카드',
+                  style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+                ),
+              ),
         body: SingleChildScrollView(
           child: Center(
             child: CardPageWrapper(),
@@ -38,36 +40,54 @@ class CardPageWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TrackList(),
+                AddTrack(),
+              ],
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TrackList(),
-              AddTrack(),
-            ],
+          Container(
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+            child: CardNote(),
           ),
+        ],
+      );
+    } else {
+      return Container(
+        margin: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
         ),
-        Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
-          ),
-          child: CardNote(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TrackList(),
+            AddTrack(),
+          ],
         ),
-      ],
-    );
+      );
+    }
   }
 }
 
@@ -80,32 +100,49 @@ class TrackList extends StatelessWidget {
 
   final Controller ctrl = Get.find();
 
+  double _width(context) {
+    int maxCnt = 5;
+    int stampSize = MediaQuery.of(context).orientation == Orientation.portrait ? STAMP_SIZE_SMALL : STAMP_SIZE_LARGE;
+    for (var item in ctrl.trackList) {
+      int cnt = item['max_stamp'] ?? 7;
+      if (cnt > maxCnt)
+        maxCnt = cnt;
+    }
+    for (List<dynamic> item in ctrl.stampDict.values) {
+      int cnt = item.length;
+      if (cnt > maxCnt)
+        maxCnt = cnt;
+    }
+    return 180.0 + stampSize * maxCnt;
+  }
   @override
   Widget build(BuildContext context) {
     // return Container(
     return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
-          width: 500,
-          child: GetBuilder<Controller>(
-              builder: (_) => ReorderableListView(
-                    shrinkWrap: true,
-                    children: [
-                      for (var i = 0; i < ctrl.trackList.length; i++)
-                        Row(
-                          key: Key('${i}'),
-                          children: [
-                            TrackButton(i),
-                            TrackLine(i),
-                          ],
-                        ),
-                    ],
-                    padding: EdgeInsets.all(10),
-                    onReorder: (int oldIdx, int newIdx) {
-                      ctrl.reorderTrack(oldIdx, newIdx);
-                    },
-                  )),
-        ));
+      scrollDirection: Axis.horizontal,
+      child: GetBuilder<Controller>(
+        builder: (_) => Container(
+          width: _width(context),
+          child: ReorderableListView(
+            shrinkWrap: true,
+            children: [
+              for (var i = 0; i < ctrl.trackList.length; i++)
+                Row(
+                  key: Key('${i}'),
+                  children: [
+                    TrackButton(i),
+                    TrackLine(i),
+                  ],
+                ),
+            ],
+            padding: EdgeInsets.all(10),
+            onReorder: (int oldIdx, int newIdx) {
+              ctrl.reorderTrack(oldIdx, newIdx);
+            },
+          ),
+        ),
+      ),
+    );
   }
 }
 

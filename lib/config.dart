@@ -8,3 +8,6 @@ Color backgroundColor = Colors.indigo.shade900;
 Color textColor = Colors.indigo.shade900;
 
 int MAX_TRACKNAME_LEN = 16;
+
+int STAMP_SIZE_SMALL = 40;
+int STAMP_SIZE_LARGE = 60;

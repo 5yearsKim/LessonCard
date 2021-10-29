@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/config.dart';
 
 // custom
+import 'package:myapp/config.dart';
 import 'package:myapp/controller.dart';
 import 'package:myapp/utils/stamp.dart';
 import 'package:myapp/utils/time.dart';
@@ -92,106 +92,109 @@ class Stamp extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(datePrettify(dt),
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(datePrettify(dt),
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
                     ),
-                  ),
-                  Text(timePrettify(dt, withLang: true),
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
+                    Text(timePrettify(dt, withLang: true),
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey[200],
-                    ),
-                    child: Column(
-                      children: [
-                        Text('연습 노트',
-                          style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            fontWeight: FontWeight.bold,
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.grey[200],
+                      ),
+                      child: Column(
+                        children: [
+                          Text('연습 노트',
+                            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        TextField(
-                          decoration:
-                              InputDecoration(labelText: '연습노트를 적어보세요!'),
-                          controller: noteTcr,
-                          minLines: 1,
-                          maxLines: 6,
+                          TextField(
+                            decoration:
+                                InputDecoration(labelText: '연습노트를 적어보세요!'),
+                            controller: noteTcr,
+                            minLines: 1,
+                            maxLines: 6,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton.icon(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            if (item != null)
+                              ctrl.deleteStamp(trackId, item['id']);
+                            Navigator.of(context).pop();
+                          },
+                          label: Text('삭제하기'),
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextButton.icon(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          if (item != null)
-                            ctrl.deleteStamp(trackId, item['id']);
-                          Navigator.of(context).pop();
-                        },
-                        label: Text('삭제하기'),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          shape: StadiumBorder(),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            shape: StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('취소'),
                         ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('취소'),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: StadiumBorder(),
-                          onPrimary: Colors.white,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: StadiumBorder(),
+                            onPrimary: Colors.white,
+                          ),
+                          onPressed: () {
+                            ctrl.updateStamp(trackId, item['id'],
+                                note: noteTcr.text);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('저장'),
                         ),
-                        onPressed: () {
-                          ctrl.updateStamp(trackId, item['id'],
-                              note: noteTcr.text);
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('저장'),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
         });
   }
 
-  Widget StampImage({String stampName = '', bool isHide = false}) {
+  Widget StampImage(BuildContext context, {String stampName = '', bool isHide = false}) {
     if (stampName.isEmpty) {
       stampName = 'bear';
     }
+    int stampSize = MediaQuery.of(context).orientation == Orientation.portrait ? STAMP_SIZE_SMALL : STAMP_SIZE_LARGE;
     return Container(
       margin: EdgeInsets.all(5),
       child: Image.asset(
         animalDict[stampName] ?? '',
         color: isHide ? Colors.grey : null,
         // colorBlendMode: BlendMode.modulate,
-        width: 30,
-        height: 30,
+        width: stampSize - 5,
+        height: stampSize - 5,
         fit: BoxFit.contain,
       ),
     );
@@ -203,6 +206,7 @@ class Stamp extends StatelessWidget {
         ctrl.insertStamp(trackId);
       },
       child: StampImage(
+        context,
         stampName: stampName,
         isHide: true,
       ),
@@ -221,6 +225,7 @@ class Stamp extends StatelessWidget {
         message: item['note'].isEmpty ? '${renderTime}' : '${item['note']}(${renderTime})',
         waitDuration: Duration(),
         child: StampImage(
+          context,
           stampName: stampName,
           isHide: false,
         ),
