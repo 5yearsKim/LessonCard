@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 //custom
+import 'package:myapp/config.dart';
 import 'package:myapp/controller.dart';
 import 'package:myapp/utils/misc.dart';
 import 'package:myapp/tools/animatedButton.dart';
@@ -16,7 +17,7 @@ class AnalysisPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('analysis'),
+        title: Text('데이터분석', style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -25,7 +26,7 @@ class AnalysisPage extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(30.0),
           ),
           child: AnalysisContent(),
         ),
@@ -130,21 +131,21 @@ class SelectMetric extends StatelessWidget {
     return Container(
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         AnimatedButton(
-          label: 'total cnt',
+          label: '총 연습 횟수',
           clicked: metric == 'cnt',
           onPressed: () {
             setMetric('cnt');
           },
         ),
         AnimatedButton(
-          label: 'avgSec',
+          label: '한 곡 길이',
           clicked: metric == 'avgSec',
           onPressed: () {
             setMetric('avgSec');
           },
         ),
         AnimatedButton(
-            label: 'pracTime',
+            label: '총 연습 시간',
             clicked: metric == 'pracTime',
             onPressed: () {
               setMetric('pracTime');
@@ -175,7 +176,7 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
   }
 
   get _width {
-    return 20 + 200 * widget.portion;
+    return 30 + widget.portion * (MediaQuery.of(context).size.width - 100);
   }
 
   get lightColor {
@@ -204,7 +205,7 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
             ),
           ),
           child: Container(
-            padding: EdgeInsets.all(2),
+            padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: lightColor,
               borderRadius: BorderRadius.only(
@@ -216,6 +217,7 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
             child: Text(widget.sbjName,
               style: TextStyle(
                 color: textOnColor(lightColor),
+                fontWeight: FontWeight.bold,
               ),
             ),
           )

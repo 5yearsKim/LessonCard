@@ -31,11 +31,12 @@ class _AnimalPickerState extends State<AnimalPicker> {
           for (String animal in animalDict.keys)
             Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.circle,
                   border: tmpAnimal != animal
                       ? null
                       : Border.all(
                           color: Colors.red,
+                          width: 2,
                         )),
               child: IconButton(
                 icon: Image.asset(animalDict[animal] ?? ''),

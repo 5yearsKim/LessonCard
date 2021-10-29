@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-// import 'tutorialPage.dart';
-// import 'designPractice.dart';
 import 'package:get/get.dart';
 import 'screens/calendarPage.dart';
 import 'screens/cardPage.dart';
@@ -36,10 +34,6 @@ class Nav2App extends StatelessWidget {
         GetPage(
           name: '/',
           page: () => MyHomePage(),
-        ),
-        GetPage(
-          name: '/calendar',
-          page: () => CalendarPage(),
         ),
         GetPage(
           name: '/card',
@@ -90,7 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       return Scaffold(
           appBar: AppBar(
-            title: Text('home'),
+            title: Text('스케줄',
+              style: TextStyle(color: textColor, fontWeight: FontWeight.bold)
+            ),
           ),
           body: CalendarPage(),
       ); 

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 // custom
+import 'package:myapp/config.dart';
 import 'package:myapp/controller.dart';
 import 'package:myapp/tools/numericStepButton.dart';
 import 'package:myapp/tools/animalPicker.dart';
@@ -56,18 +57,27 @@ class _TrackButtonState extends State<TrackButton> {
   Widget build(BuildContext context) {
     return Container(
       child: GetBuilder<Controller>(
-        builder: (_) => ElevatedButton(
-          onPressed: () {
-            openEditPage(context);
-          },
-          style: ElevatedButton.styleFrom(
+        builder: (_) => Container(
+          alignment: Alignment.center,
+          width: 90,
+          child: ElevatedButton(
+            onPressed: () {
+              openEditPage(context);
+            },
+            style: ElevatedButton.styleFrom(
               primary: trackColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
-              )),
-          child: Text(
-            track['subject_name'],
-            style: TextStyle(color: textColor),
+              ),
+            ),
+            child: Text(
+              track['subject_name'],
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
           ),
         ),
       ),
@@ -109,7 +119,10 @@ class _EditTrackState extends State<EditTrack> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(6.0),
+          contentPadding: const EdgeInsets.all(10.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(title),
           content: content,
           actions: actions,
@@ -120,7 +133,7 @@ class _EditTrackState extends State<EditTrack> {
 
   void openAnimlPicker(BuildContext context) async {
     _openDialog(
-        'Animal Picker',
+        '테마 도장',
         AnimalPicker(
           animal: stampName,
           onChangeAnimal: (animal) {
@@ -141,7 +154,7 @@ class _EditTrackState extends State<EditTrack> {
 
   void openColorPicker(BuildContext context) async {
     _openDialog(
-        'color picker',
+        '테마 컬러',
         MaterialColorPicker(
           onColorChange: (Color color) {
             setState(() => _color = color);
@@ -154,7 +167,7 @@ class _EditTrackState extends State<EditTrack> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('submit'),
+            child: Text('OK'),
           ),
         ]);
   }
@@ -184,13 +197,22 @@ class _EditTrackState extends State<EditTrack> {
             children: [
               Expanded(
                 flex: lw,
-                child: Center(child: Text('트랙 이름')),
+                child: Center(
+                  child: Text(
+                    '트랙 이름',
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
               ),
               Expanded(
                 flex: rw,
                 child: TextField(
+                  maxLength: MAX_TRACKNAME_LEN,
                   textAlign: TextAlign.center,
                   controller: nameTcr,
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -199,7 +221,14 @@ class _EditTrackState extends State<EditTrack> {
             children: [
               Expanded(
                 flex: lw,
-                child: Center(child: Text('테마 컬러 ')),
+                child: Center(
+                  child: Text(
+                    '테마 컬러',
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
               ),
               Expanded(
                 flex: rw,
@@ -221,7 +250,13 @@ class _EditTrackState extends State<EditTrack> {
             children: [
               Expanded(
                 flex: lw,
-                child: Center(child: Text('도장 개수')),
+                child: Center(
+                  child: Text('도장 개수',
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
               Expanded(
                 flex: rw,
@@ -241,7 +276,11 @@ class _EditTrackState extends State<EditTrack> {
               Expanded(
                 flex: lw,
                 child: Center(
-                  child: Text('도장 모양'),
+                  child: Text('테마 도장',
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
               Expanded(
@@ -263,7 +302,9 @@ class _EditTrackState extends State<EditTrack> {
                 onPressed: () {
                   openDeleteConfirm(context, () => Navigator.of(context).pop());
                 },
-                label: Text('삭제하기'),
+                label: Text('삭제하기',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),

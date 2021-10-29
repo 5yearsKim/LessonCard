@@ -25,12 +25,12 @@ class _AnimatedButtonState extends State<AnimatedButton> {
   }
 
   get _padding {
-    return widget.clicked ? 30.0 : 25.0;
+    return widget.clicked ? 20.0 : 10.0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         widget.onPressed();
       },
@@ -38,18 +38,26 @@ class _AnimatedButtonState extends State<AnimatedButton> {
         padding: EdgeInsets.all(_padding),
         decoration: BoxDecoration(
           color: _color,
-          shape: BoxShape.circle,
-          boxShadow: !widget.clicked ? null : [
-            BoxShadow(
-              color: _color.withOpacity(0.3),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: !widget.clicked
+              ? null
+              : [
+                  BoxShadow(
+                    color: _color.withOpacity(0.3),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
         ),
         duration: Duration(milliseconds: 300),
-        child: Text(widget.label, style: TextStyle(color: _textColor)),
+        child: Text(
+          widget.label,
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                color: _textColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
       ),
     );
   }

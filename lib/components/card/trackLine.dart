@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myapp/config.dart';
 
 // custom
 import 'package:myapp/controller.dart';
@@ -96,9 +97,20 @@ class Stamp extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(datePrettify(dt)),
-                  Text(timePrettify(dt, withLang: true)),
+                  Text(datePrettify(dt),
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  Text(timePrettify(dt, withLang: true),
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   Container(
+                    margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -106,7 +118,11 @@ class Stamp extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        Text('연습 노트'),
+                        Text('연습 노트',
+                          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         TextField(
                           decoration:
                               InputDecoration(labelText: '연습노트를 적어보세요!'),
@@ -202,7 +218,7 @@ class Stamp extends StatelessWidget {
       },
       child: Tooltip(
         // message: item['${item['note']}(${item['created_at']})'],
-        message: '${item['note']}(${renderTime})',
+        message: item['note'].isEmpty ? '${renderTime}' : '${item['note']}(${renderTime})',
         waitDuration: Duration(),
         child: StampImage(
           stampName: stampName,

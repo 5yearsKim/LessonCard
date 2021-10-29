@@ -36,7 +36,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           IconButton(
             icon: Icon(
               Icons.remove,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).primaryColor,
             ),
             padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
             iconSize: 32.0,
@@ -62,7 +62,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           IconButton(
             icon: Icon(
               Icons.add,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).primaryColor,
             ),
             padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
             iconSize: 32.0,

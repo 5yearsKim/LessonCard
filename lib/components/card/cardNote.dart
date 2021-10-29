@@ -27,7 +27,9 @@ class CardNote extends StatelessWidget {
           margin: EdgeInsets.fromLTRB(0, 0, 5, 10),
           child: GetBuilder<Controller>(builder: (_) {
             return Text('${datePrettify(ctrl.selectedDay)}',
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             );
           }),
         ),

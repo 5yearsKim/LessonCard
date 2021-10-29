@@ -16,39 +16,40 @@ class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-      children: [
-        Container(
-          child: MyCalender(),
-          padding: EdgeInsets.all(15.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            child: MyCalender(),
+            padding: EdgeInsets.all(15.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(40),
+                bottomRight: Radius.circular(40),
+              ),
             ),
           ),
-        ),
-        Container(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton.icon(
-              icon: Icon(Icons.insights),
-              style: ElevatedButton.styleFrom(
-                primary: lightenColor(secondaryColor, amount: 0.5),
-                onPrimary: lightenColor(primaryColor, amount: 0.3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+          Container(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.insights),
+                style: ElevatedButton.styleFrom(
+                  primary: lightenColor(secondaryColor, amount: 0.5),
+                  onPrimary: lightenColor(primaryColor, amount: 0.3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
-              ),
-              onPressed: () {
-                Get.toNamed('/analysis');
-              },
-              label: Text('데이터 분석', style: TextStyle(fontWeight: FontWeight.bold)),
-            )),
-        MoveCard(),
-      ],
-    ));
+                onPressed: () {
+                  Get.toNamed('/analysis');
+                },
+                label: Text('데이터 분석', style: TextStyle(fontWeight: FontWeight.bold)),
+              )),
+          MoveCard(),
+        ],
+      ),
+    );
   }
 }
 
@@ -104,19 +105,19 @@ class _MyCalenderState extends State<MyCalender> {
           calendarStyle: CalendarStyle(
             isTodayHighlighted: true,
             selectedDecoration: BoxDecoration(
-              color: Colors.purple[600],
+              color: primaryColor, 
               shape: BoxShape.circle,
             ),
             todayDecoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: primaryColor.withOpacity(0.3),
+                  color: Colors.purple.withOpacity(0.3),
                   spreadRadius: 5,
                   blurRadius: 7,
                   offset: Offset(0, 3), // changes position of shadow
                 ),
               ],
-              color: primaryColor,
+              color: Colors.purple,
               shape: BoxShape.circle,
             ),
             weekendTextStyle: TextStyle().copyWith(color: Colors.red),
@@ -128,6 +129,9 @@ class _MyCalenderState extends State<MyCalender> {
             headerMargin: EdgeInsets.only(left: 40, top: 0, right: 40, bottom: 10),
             leftChevronIcon: Icon(Icons.arrow_left),
             rightChevronIcon: Icon(Icons.arrow_right),
+            titleTextStyle: Theme.of(context).textTheme.headline6!.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           locale: 'ko-KR',
           calendarBuilders: CalendarBuilders(
@@ -272,7 +276,7 @@ class ScheduleBox extends StatelessWidget {
       }
       return Container(
           width: double.infinity,
-          // padding: EdgeInsets.all(10),
+          padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
           child: Column(
             children: [
               Text(
@@ -286,7 +290,9 @@ class ScheduleBox extends StatelessWidget {
                 padding: EdgeInsets.all(5),
                 child: Text(
                   '${ctrl.todayCard['note']}',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
                         color: Colors.grey[700],
                       ),
                 ),

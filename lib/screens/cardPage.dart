@@ -7,6 +7,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:myapp/components/card/trackLine.dart';
 import 'package:myapp/components/card/cardNote.dart';
 import 'package:myapp/components/card/trackButton.dart';
+import 'package:myapp/config.dart';
 import 'package:myapp/controller.dart';
 import 'package:myapp/tools/text.dart';
 import 'package:myapp/utils/misc.dart';
@@ -17,15 +18,17 @@ class CardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('card page'),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: CardPageWrapper(),
+        appBar: AppBar(
+          title: Text(
+            '연습카드',
+            style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+          ),
         ),
-      ) 
-    );
+        body: SingleChildScrollView(
+          child: Center(
+            child: CardPageWrapper(),
+          ),
+        ));
   }
 }
 
@@ -148,7 +151,7 @@ class _AddTrackState extends State<AddTrack> {
                   child: TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
                       textAlign: TextAlign.center,
-                      maxLength: 16,
+                      maxLength: MAX_TRACKNAME_LEN,
                       controller: nameTcr,
                       style: TextStyle(
                         color: info == null ? null : code2color(info['color']),
@@ -172,31 +175,40 @@ class _AddTrackState extends State<AddTrack> {
                     },
                   ),
                 ),
-                TextButton(
-                    onPressed: () {
-                      if (nameTcr.text.isEmpty) {
-                        print('empty text');
-                        return;
-                      }
-                      if (info == null) {
-                        ctrl.insertTrack(nameTcr.text);
-                      } else {
-                        ctrl.insertTrack(nameTcr.text,
-                          stampName: info['stamp_name'] ?? '',
-                          color: info['color'] ?? '',
-                          maxStamp: info['max_stamp'],
-                        );
-                      }
-                      info = null;
-                      nameTcr.text = '';
-                      setState(() => isClicked = !isClicked);
-                    },
-                    child: Text('submit')),
-                TextButton(
-                    onPressed: () {
-                      setState(() => isClicked = !isClicked);
-                    },
-                    child: Text('취소')),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: StadiumBorder(),
+                  ),
+                  onPressed: () {
+                    setState(() => isClicked = !isClicked);
+                  },
+                  child: Text('취소'),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                  ),
+                  onPressed: () {
+                    if (nameTcr.text.isEmpty) {
+                      // print('empty text');
+                      return;
+                    }
+                    if (info == null) {
+                      ctrl.insertTrack(nameTcr.text);
+                    } else {
+                      ctrl.insertTrack(
+                        nameTcr.text,
+                        stampName: info['stamp_name'] ?? '',
+                        color: info['color'] ?? '',
+                        maxStamp: info['max_stamp'],
+                      );
+                    }
+                    info = null;
+                    nameTcr.text = '';
+                    setState(() => isClicked = !isClicked);
+                  },
+                  child: Text('등록', style: TextStyle(color: Colors.white)),
+                ),
               ],
             )
           : IconButton(
