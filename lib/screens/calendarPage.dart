@@ -31,21 +31,22 @@ class CalendarPage extends StatelessWidget {
             ),
           ),
           Container(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton.icon(
-                icon: Icon(Icons.insights),
-                style: ElevatedButton.styleFrom(
-                  primary: lightenColor(secondaryColor, amount: 0.5),
-                  onPrimary: lightenColor(primaryColor, amount: 0.3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+            alignment: Alignment.centerRight,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.insights),
+              style: ElevatedButton.styleFrom(
+                primary: lightenColor(secondaryColor, amount: 0.5),
+                onPrimary: lightenColor(primaryColor, amount: 0.3),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                onPressed: () {
-                  Get.toNamed('/analysis');
-                },
-                label: Text('데이터 분석', style: TextStyle(fontWeight: FontWeight.bold)),
-              )),
+              ),
+              onPressed: () {
+                Get.toNamed('/analysis');
+              },
+              label: Text('dataAnalysis'.tr, style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ),
           MoveCard(),
         ],
       ),
@@ -64,6 +65,7 @@ class _MyCalenderState extends State<MyCalender> {
 
   _MyCalenderState() {
     ctrl.bringCardList();
+    _onDaySelected(DateTime.now(), DateTime.now());
   }
 
   var eventDict = {};
@@ -72,7 +74,7 @@ class _MyCalenderState extends State<MyCalender> {
     if (!isSameDay(ctrl.selectedDay, selectedDay)) {
       ctrl.setSelectedDay(selectedDay);
       await ctrl.bringTrackList();
-      print(ctrl.trackList);
+      // print(ctrl.trackList);
     }
   }
 
@@ -105,7 +107,7 @@ class _MyCalenderState extends State<MyCalender> {
           calendarStyle: CalendarStyle(
             isTodayHighlighted: true,
             selectedDecoration: BoxDecoration(
-              color: primaryColor, 
+              color: primaryColor,
               shape: BoxShape.circle,
             ),
             todayDecoration: BoxDecoration(
@@ -130,10 +132,10 @@ class _MyCalenderState extends State<MyCalender> {
             leftChevronIcon: Icon(Icons.arrow_left),
             rightChevronIcon: Icon(Icons.arrow_right),
             titleTextStyle: Theme.of(context).textTheme.headline6!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          locale: 'ko-KR',
+          locale: Get.locale.toString(),
           calendarBuilders: CalendarBuilders(
             markerBuilder: (context, date, events) {
               if (events.isEmpty) {
@@ -280,7 +282,7 @@ class ScheduleBox extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                '연습 일지',
+                'practiceNote'.tr,
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       color: textColor,
                       fontWeight: FontWeight.bold,

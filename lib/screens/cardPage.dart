@@ -22,7 +22,7 @@ class CardPage extends StatelessWidget {
             ? null
             : AppBar(
                 title: Text(
-                  '연습카드',
+                  'Card'.tr,
                   style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -219,7 +219,7 @@ class _AddTrackState extends State<AddTrack> {
                   onPressed: () {
                     setState(() => isClicked = !isClicked);
                   },
-                  child: Text('취소'),
+                  child: Text('cancel'.tr),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(

@@ -16,7 +16,7 @@ class CardNote extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '연습일지',
+          'practiceNote'.tr,
           style: Theme.of(context).textTheme.headline6!.copyWith(
             color: textColor,
             fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ class _CardNoteContentState extends State<CardNoteContent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            decoration: InputDecoration(labelText: '연습일지를 적어보세요!'),
+            decoration: InputDecoration(labelText: 'msgWriteNote'.tr),
             controller: noteTcr,
             minLines: 1,
             maxLines: 6,
@@ -93,7 +93,7 @@ class _CardNoteContentState extends State<CardNoteContent> {
                   noteTcr.text = card['note'];
                   setState(() => isEdit = false);
                 },
-                child: Text('취소'),
+                child: Text('cancel'.tr),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -104,7 +104,7 @@ class _CardNoteContentState extends State<CardNoteContent> {
                   ctrl.updateCard(note: noteTcr.text);
                   setState(() => isEdit = false);
                 },
-                child: Text('저장'),
+                child: Text('save'.tr),
               )
             ],
           )

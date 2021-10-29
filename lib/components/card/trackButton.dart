@@ -199,7 +199,7 @@ class _EditTrackState extends State<EditTrack> {
                 flex: lw,
                 child: Center(
                   child: Text(
-                    '트랙 이름',
+                    'trackName'.tr,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -223,7 +223,7 @@ class _EditTrackState extends State<EditTrack> {
                 flex: lw,
                 child: Center(
                   child: Text(
-                    '테마 컬러',
+                    'themeColor'.tr,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -237,7 +237,7 @@ class _EditTrackState extends State<EditTrack> {
                     icon: Icon(Icons.circle),
                     iconSize: 25,
                     color: _color,
-                    tooltip: '컬러를 선택해주세요!',
+                    tooltip: 'msgSelectColor'.tr,
                     onPressed: () {
                       openColorPicker(context);
                     },
@@ -251,7 +251,7 @@ class _EditTrackState extends State<EditTrack> {
               Expanded(
                 flex: lw,
                 child: Center(
-                  child: Text('도장 개수',
+                  child: Text('maxStamp'.tr,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -276,7 +276,7 @@ class _EditTrackState extends State<EditTrack> {
               Expanded(
                 flex: lw,
                 child: Center(
-                  child: Text('테마 도장',
+                  child: Text('themeStamp'.tr,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -302,7 +302,7 @@ class _EditTrackState extends State<EditTrack> {
                 onPressed: () {
                   openDeleteConfirm(context, () => Navigator.of(context).pop());
                 },
-                label: Text('삭제하기',
+                label: Text('delete'.tr,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -319,7 +319,7 @@ class _EditTrackState extends State<EditTrack> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('취소'),
+                child: Text('cancel'.tr),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -336,7 +336,7 @@ class _EditTrackState extends State<EditTrack> {
                   );
                   Navigator.of(context).pop();
                 },
-                child: Text('저장'),
+                child: Text('save'.tr),
               ),
             ],
           )

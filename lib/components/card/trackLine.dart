@@ -119,14 +119,14 @@ class Stamp extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text('연습 노트',
+                          Text('memo'.tr,
                             style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextField(
                             decoration:
-                                InputDecoration(labelText: '연습노트를 적어보세요!'),
+                                InputDecoration(labelText: 'msgWriteMemo'.tr),
                             controller: noteTcr,
                             minLines: 1,
                             maxLines: 6,
@@ -144,7 +144,7 @@ class Stamp extends StatelessWidget {
                               ctrl.deleteStamp(trackId, item['id']);
                             Navigator.of(context).pop();
                           },
-                          label: Text('삭제하기'),
+                          label: Text('delete'.tr),
                         ),
                       ],
                     ),
@@ -158,7 +158,7 @@ class Stamp extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('취소'),
+                          child: Text('cancel'.tr),
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -170,7 +170,7 @@ class Stamp extends StatelessWidget {
                                 note: noteTcr.text);
                             Navigator.of(context).pop();
                           },
-                          child: Text('저장'),
+                          child: Text('save'.tr),
                         ),
                       ],
                     ),

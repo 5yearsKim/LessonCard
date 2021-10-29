@@ -15,7 +15,7 @@ class Controller extends GetxController {
   Map<int, List<dynamic>> stampDict = {};
   List<dynamic> subjectName = [];
 
-  ReportDict reportDict = {};
+  ReportDict reportDict = {}; //bringAllStamp
   
   get report {
     var ret = {};

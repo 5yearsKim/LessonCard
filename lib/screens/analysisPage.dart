@@ -17,7 +17,7 @@ class AnalysisPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('데이터분석', style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
+        title: Text('dataAnalysis'.tr, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -90,7 +90,7 @@ class _AnalysisContentState extends State<AnalysisContent> {
             if (metric == 'avgSec') {
               if (item['avgSec'] == null) {
                 _portion = 0;
-                _label = '측정 불가';
+                _label = 'unmeasurable'.tr;
               } else {
                 _portion = item['avgSec'] / maxVal['avgSec'];
                 _label = secondsPrettify(item['avgSec']);
@@ -98,7 +98,7 @@ class _AnalysisContentState extends State<AnalysisContent> {
             } else if (metric == 'pracTime') {
               if (item['pracTime'] == null) {
                 _portion = 0;
-                _label = '측정 불가';
+                _label = 'unmeasurable'.tr;
               } else {
                 _portion = item['pracTime'] / maxVal['pracTime'];
                 _label = secondsPrettify(item['pracTime']); 
@@ -106,7 +106,10 @@ class _AnalysisContentState extends State<AnalysisContent> {
             } else {
               // cnt
               _portion = item['cnt'] / maxVal['cnt'];
-              _label = '총 ${item['cnt']}회'; 
+              // _label = '총 ${item['cnt']}회'; 
+              _label = 'totalCntN'.trParams({
+                'N': item['cnt'].toString(),
+              }); 
             }
             return SubjectAnalysis(
               sbjName: k,
@@ -131,21 +134,21 @@ class SelectMetric extends StatelessWidget {
     return Container(
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         AnimatedButton(
-          label: '총 연습 횟수',
+          label: 'totalCnt'.tr,
           clicked: metric == 'cnt',
           onPressed: () {
             setMetric('cnt');
           },
         ),
         AnimatedButton(
-          label: '한 곡 길이',
+          label: 'songLength'.tr,
           clicked: metric == 'avgSec',
           onPressed: () {
             setMetric('avgSec');
           },
         ),
         AnimatedButton(
-            label: '총 연습 시간',
+            label: 'pracTime'.tr,
             clicked: metric == 'pracTime',
             onPressed: () {
               setMetric('pracTime');
@@ -176,7 +179,13 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
   }
 
   get _width {
+    if (widget.portion == 0) {
+      return 100.0;
+    }
     return 30 + widget.portion * (MediaQuery.of(context).size.width - 100);
+  }
+  get _color {
+    return widget.portion == 0.0 ? Colors.grey : widget._color;
   }
 
   get lightColor {
@@ -227,7 +236,7 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
           padding: EdgeInsets.all(5.0),
           alignment: Alignment.centerRight,
           decoration: BoxDecoration(
-            color: widget._color,
+            color: _color,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(20),
               bottomRight: Radius.circular(20),
@@ -235,7 +244,7 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
             ),
           ),
           duration: Duration(milliseconds: 300),
-          child: Text(widget.label, style: TextStyle(color: textOnColor(widget._color))),
+          child: Text(widget.label, style: TextStyle(color: textOnColor(_color))),
         ),
       ]),
     );
