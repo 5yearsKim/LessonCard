@@ -1,4 +1,4 @@
-package com.example.myapp
+package com.onioncontents.lessonCard
 
 import io.flutter.embedding.android.FlutterActivity
 

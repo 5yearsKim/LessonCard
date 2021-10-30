@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 // custom
-import 'package:myapp/components/card/trackLine.dart';
-import 'package:myapp/components/card/cardNote.dart';
-import 'package:myapp/components/card/trackButton.dart';
-import 'package:myapp/config.dart';
-import 'package:myapp/controller.dart';
-import 'package:myapp/tools/text.dart';
-import 'package:myapp/utils/misc.dart';
+import 'package:lessonCard/components/card/trackLine.dart';
+import 'package:lessonCard/components/card/cardNote.dart';
+import 'package:lessonCard/components/card/trackButton.dart';
+import 'package:lessonCard/config.dart';
+import 'package:lessonCard/controller.dart';
+import 'package:lessonCard/tools/text.dart';
+import 'package:lessonCard/utils/misc.dart';
 
 class CardPage extends StatelessWidget {
   const CardPage({Key? key}) : super(key: key);
@@ -18,19 +18,20 @@ class CardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MediaQuery.of(context).orientation == Orientation.landscape
-            ? null
-            : AppBar(
-                title: Text(
-                  'Card'.tr,
-                  style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-                ),
+      appBar: MediaQuery.of(context).orientation == Orientation.landscape
+          ? null
+          : AppBar(
+              title: Text(
+                'Card'.tr,
+                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
               ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: CardPageWrapper(),
-          ),
-        ));
+            ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: CardPageWrapper(),
+        ),
+      ),
+    );
   }
 }
 
@@ -105,16 +106,15 @@ class TrackList extends StatelessWidget {
     int stampSize = MediaQuery.of(context).orientation == Orientation.portrait ? STAMP_SIZE_SMALL : STAMP_SIZE_LARGE;
     for (var item in ctrl.trackList) {
       int cnt = item['max_stamp'] ?? 7;
-      if (cnt > maxCnt)
-        maxCnt = cnt;
+      if (cnt > maxCnt) maxCnt = cnt;
     }
     for (List<dynamic> item in ctrl.stampDict.values) {
       int cnt = item.length;
-      if (cnt > maxCnt)
-        maxCnt = cnt;
+      if (cnt > maxCnt) maxCnt = cnt;
     }
     return 180.0 + stampSize * maxCnt;
   }
+
   @override
   Widget build(BuildContext context) {
     // return Container(
@@ -135,7 +135,7 @@ class TrackList extends StatelessWidget {
                   ],
                 ),
             ],
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
             onReorder: (int oldIdx, int newIdx) {
               ctrl.reorderTrack(oldIdx, newIdx);
             },
@@ -179,9 +179,11 @@ class _AddTrackState extends State<AddTrack> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 400),
       child: isClicked
           ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
@@ -244,13 +246,13 @@ class _AddTrackState extends State<AddTrack> {
                     nameTcr.text = '';
                     setState(() => isClicked = !isClicked);
                   },
-                  child: Text('등록', style: TextStyle(color: Colors.white)),
+                  child: Text('ok'.tr, style: TextStyle(color: Colors.white)),
                 ),
               ],
             )
           : IconButton(
               icon: Icon(Icons.add),
-              tooltip: '트랙 추가하기',
+              tooltip: 'msgAddTrack'.tr,
               color: Colors.yellow,
               onPressed: () {
                 setState(() => isClicked = !isClicked);

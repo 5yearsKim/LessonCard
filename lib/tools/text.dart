@@ -2,10 +2,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 // custom
-import 'package:myapp/utils/misc.dart';
+import 'package:lessonCard/utils/misc.dart';
 
 class ColorText extends StatefulWidget {
-  const ColorText(this.subjectName, this.subjectColor, { Key? key }) : super(key: key);
+  const ColorText(this.subjectName, this.subjectColor, {Key? key}) : super(key: key);
   final subjectName;
   final subjectColor;
 
@@ -21,10 +21,9 @@ class _ColorTextState extends State<ColorText> {
     super.initState();
     _color = code2color(widget.subjectColor);
   }
+
   @override
   Widget build(BuildContext context) {
-    return Text('${widget.subjectName}',
-      style: TextStyle(color: _color)
-    );
+    return Text('${widget.subjectName}', style: TextStyle(color: _color));
   }
 }

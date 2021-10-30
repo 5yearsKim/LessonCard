@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // custom
-import 'package:myapp/controller.dart';
-import 'package:myapp/utils/time.dart';
-import 'package:myapp/config.dart';
+import 'package:lessonCard/controller.dart';
+import 'package:lessonCard/utils/time.dart';
+import 'package:lessonCard/config.dart';
 
 class CardNote extends StatelessWidget {
   CardNote({Key? key}) : super(key: key);
@@ -18,18 +18,19 @@ class CardNote extends StatelessWidget {
         Text(
           'practiceNote'.tr,
           style: Theme.of(context).textTheme.headline6!.copyWith(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-          ),
+                color: textColor,
+                fontWeight: FontWeight.bold,
+              ),
         ),
         Container(
           alignment: Alignment.centerRight,
           margin: EdgeInsets.fromLTRB(0, 0, 5, 10),
           child: GetBuilder<Controller>(builder: (_) {
-            return Text('${datePrettify(ctrl.selectedDay)}',
+            return Text(
+              '${datePrettify(ctrl.selectedDay)}',
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             );
           }),
         ),
@@ -80,7 +81,6 @@ class _CardNoteContentState extends State<CardNoteContent> {
             controller: noteTcr,
             minLines: 1,
             maxLines: 6,
-            
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -121,21 +121,35 @@ class _CardNoteContentState extends State<CardNoteContent> {
             Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(10),
-              child: Text(noteTcr.text,
+              child: Text(
+                noteTcr.text,
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                  color: Colors.grey[800],
-                ),
+                      color: Colors.grey[800],
+                    ),
               ),
             ),
             Positioned(
               bottom: 0,
               right: 0,
-              child: FloatingActionButton.small(
-                onPressed: () {
-                  setState(() => isEdit = true);
-                },
-                backgroundColor: Colors.white,
-                child: Icon(Icons.edit, size: 30),
+              child: Draggable(
+                feedback: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(colors: [
+                        Colors.yellow,
+                        Colors.transparent,
+                      ])),
+                ),
+                childWhenDragging: Container(),
+                child: FloatingActionButton.small(
+                  onPressed: () {
+                    setState(() => isEdit = true);
+                  },
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.edit, size: 30),
+                ),
               ),
             ),
           ],

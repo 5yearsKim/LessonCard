@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 //custom
-import 'package:myapp/controller.dart';
-import 'package:myapp/utils/misc.dart';
-// import 'package:myapp/dbHelper.dart';
-import 'package:myapp/utils/time.dart';
-import 'package:myapp/config.dart';
+import 'package:lessonCard/controller.dart';
+import 'package:lessonCard/utils/misc.dart';
+// import 'package:lessonCard/dbHelper.dart';
+import 'package:lessonCard/utils/time.dart';
+import 'package:lessonCard/config.dart';
 
 class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();
@@ -199,7 +199,7 @@ class MoveCard extends StatelessWidget {
           Container(
             margin: EdgeInsets.all(10),
             child: Text(
-              '아직 연습 카드가 없어요. 연습카드를 추가해보세요.',
+              'msgNoCard'.tr,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     color: Colors.grey[700],
                   ),

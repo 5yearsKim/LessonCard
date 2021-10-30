@@ -1,6 +1,6 @@
 {
-    "name": "myapp",
-    "short_name": "myapp",
+    "name": "lessonCard",
+    "short_name": "lessonCard",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,14 +1,15 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 //custom
-import 'package:myapp/config.dart';
-import 'package:myapp/controller.dart';
-import 'package:myapp/utils/misc.dart';
-import 'package:myapp/tools/animatedButton.dart';
-import 'package:myapp/utils/time.dart';
+import 'package:lessonCard/config.dart';
+import 'package:lessonCard/controller.dart';
+import 'package:lessonCard/utils/misc.dart';
+import 'package:lessonCard/tools/animatedButton.dart';
+import 'package:lessonCard/utils/time.dart';
 
 class AnalysisPage extends StatelessWidget {
   const AnalysisPage({Key? key}) : super(key: key);
@@ -71,7 +72,11 @@ class _AnalysisContentState extends State<AnalysisContent> {
   Widget build(BuildContext context) {
     if (keyOrder.isEmpty) {
       return Container(
-        child: Text('아직 연습 내역이 없어요.'),
+        padding: EdgeInsets.all(10),
+        child: Text('msgNoData'.tr,
+            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  color: Colors.grey[600],
+                )),
       );
     }
     return Column(
@@ -101,15 +106,15 @@ class _AnalysisContentState extends State<AnalysisContent> {
                 _label = 'unmeasurable'.tr;
               } else {
                 _portion = item['pracTime'] / maxVal['pracTime'];
-                _label = secondsPrettify(item['pracTime']); 
+                _label = secondsPrettify(item['pracTime']);
               }
             } else {
               // cnt
               _portion = item['cnt'] / maxVal['cnt'];
-              // _label = '총 ${item['cnt']}회'; 
+              // _label = '총 ${item['cnt']}회';
               _label = 'totalCntN'.trParams({
                 'N': item['cnt'].toString(),
-              }); 
+              });
             }
             return SubjectAnalysis(
               sbjName: k,
@@ -131,8 +136,9 @@ class SelectMetric extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
         AnimatedButton(
           label: 'totalCnt'.tr,
           clicked: metric == 'cnt',
@@ -148,7 +154,7 @@ class SelectMetric extends StatelessWidget {
           },
         ),
         AnimatedButton(
-            label: 'pracTime'.tr,
+            label: 'practiceTime'.tr,
             clicked: metric == 'pracTime',
             onPressed: () {
               setMetric('pracTime');
@@ -184,6 +190,7 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
     }
     return 30 + widget.portion * (MediaQuery.of(context).size.width - 100);
   }
+
   get _color {
     return widget.portion == 0.0 ? Colors.grey : widget._color;
   }
@@ -204,33 +211,33 @@ class _SubjectAnalysisState extends State<SubjectAnalysis> {
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: widget._color,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            ),
-          ),
-          child: Container(
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: lightColor,
+              color: widget._color,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
             ),
-            child: Text(widget.sbjName,
-              style: TextStyle(
-                color: textOnColor(lightColor),
-                fontWeight: FontWeight.bold,
+            child: Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: lightColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
               ),
-            ),
-          )
-        ),
+              child: Text(
+                widget.sbjName,
+                style: TextStyle(
+                  color: textOnColor(lightColor),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )),
         AnimatedContainer(
           width: _width,
           padding: EdgeInsets.all(5.0),

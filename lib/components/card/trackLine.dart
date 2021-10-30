@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // custom
-import 'package:myapp/config.dart';
-import 'package:myapp/controller.dart';
-import 'package:myapp/utils/stamp.dart';
-import 'package:myapp/utils/time.dart';
+import 'package:lessonCard/config.dart';
+import 'package:lessonCard/controller.dart';
+import 'package:lessonCard/utils/misc.dart';
+import 'package:lessonCard/utils/stamp.dart';
+import 'package:lessonCard/utils/time.dart';
 
 class TrackLine extends StatelessWidget {
   final int i;
@@ -34,6 +35,7 @@ class TrackLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        margin: EdgeInsets.fromLTRB(5, 4, 4, 5),
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(width: 1, color: trackColor),
@@ -98,17 +100,19 @@ class Stamp extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(datePrettify(dt),
+                    Text(
+                      datePrettify(dt),
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                          ),
                     ),
-                    Text(timePrettify(dt, withLang: true),
+                    Text(
+                      timePrettify(dt, withLang: true),
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
@@ -119,14 +123,14 @@ class Stamp extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text('memo'.tr,
+                          Text(
+                            'memo'.tr,
                             style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                           TextField(
-                            decoration:
-                                InputDecoration(labelText: 'msgWriteMemo'.tr),
+                            decoration: InputDecoration(labelText: 'msgWriteMemo'.tr),
                             controller: noteTcr,
                             minLines: 1,
                             maxLines: 6,
@@ -140,8 +144,7 @@ class Stamp extends StatelessWidget {
                         TextButton.icon(
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            if (item != null)
-                              ctrl.deleteStamp(trackId, item['id']);
+                            if (item != null) ctrl.deleteStamp(trackId, item['id']);
                             Navigator.of(context).pop();
                           },
                           label: Text('delete'.tr),
@@ -166,8 +169,7 @@ class Stamp extends StatelessWidget {
                             onPrimary: Colors.white,
                           ),
                           onPressed: () {
-                            ctrl.updateStamp(trackId, item['id'],
-                                note: noteTcr.text);
+                            ctrl.updateStamp(trackId, item['id'], note: noteTcr.text);
                             Navigator.of(context).pop();
                           },
                           child: Text('save'.tr),

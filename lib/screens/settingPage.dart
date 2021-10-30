@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 //custom
-import 'package:myapp/config.dart';
+import 'package:lessonCard/config.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -55,11 +55,10 @@ class _SettingsState extends State<Settings> {
       children: [
         TextButton(
           child: Text('language'.tr,
-            style: Theme.of(context).textTheme.subtitle1!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: primaryColor,
-            )
-          ),
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
+                  )),
           onPressed: () {
             openLangSelect(context);
           },
@@ -88,6 +87,7 @@ class _SelectLangState extends State<SelectLang> {
           leading: Radio(
             value: Locale('ko', 'KR'),
             groupValue: tmpLocale,
+            activeColor: primaryColor,
             onChanged: (Locale? val) {
               setState(() => tmpLocale = val);
             },
@@ -98,6 +98,7 @@ class _SelectLangState extends State<SelectLang> {
           leading: Radio(
             value: Locale('en', 'EN'),
             groupValue: tmpLocale,
+            activeColor: primaryColor,
             onChanged: (Locale? val) {
               setState(() => tmpLocale = val);
             },

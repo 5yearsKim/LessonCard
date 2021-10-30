@@ -26,11 +26,11 @@ class Nav2App extends StatelessWidget {
   Widget build(BuildContext context) {
     final String? tmpLocale = box.read('locale');
     Locale? myLocale;
+
     if (tmpLocale != null) {
       var parsed = tmpLocale.split('_');
       myLocale = Locale(parsed[0], parsed[1]);
     }
-    print(myLocale);
 
     return GetMaterialApp(
       title: 'practice project',

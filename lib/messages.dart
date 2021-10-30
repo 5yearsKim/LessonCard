@@ -9,6 +9,8 @@ class Messages extends Translations {
           'practiceNote': 'Practice Note',
           // card
           'card': 'Practice Card',
+          'msgNoCard': 'No practice card yet. Add your card!',
+          'msgAddTrack': 'Add Track',
           'trackName': 'Track Name',
           'themeColor': 'Theme Color',
           'msgSelectColor': 'Select Theme Color!',
@@ -19,9 +21,10 @@ class Messages extends Translations {
           'msgWriteMemo': 'Write memo for this stamp!',
           // analysis
           'dataAnalysis': 'Data Analysis',
+          'msgNoData': 'No practice yet',
           'totalCnt': 'Total Count',
           'songLength': 'Song Length',
-          'practiceTime': 'Practice Time',
+          'practiceTime': 'Total Practice Time',
           'unmeasurable': 'Unmeasurable',
           'totalCntN': '@N times',
           // setting
@@ -31,6 +34,7 @@ class Messages extends Translations {
           //general
           'cancel': 'Cancel',
           'save': 'Save',
+          'ok': 'OK',
           'delete': 'Delete',
           'Nsec': '@N sec',
           'Nmin': '@N min',
@@ -43,6 +47,8 @@ class Messages extends Translations {
           'practiceNote': '연습일지',
           // card
           'card': '연습카드',
+          'msgNoCard': '아직 연습 카드가 없어요. 연습카드를 추가해보세요.',
+          'msgAddTrack': '트랙 추가하기',
           'trackName': '트랙 이름',
           'themeColor': '테마 컬러',
           'msgSelectColor': '컬러를 선택해주세요!',
@@ -53,6 +59,7 @@ class Messages extends Translations {
           'msgWriteMemo': '이 도장에 메모를 적어보세요!',
           // analysis
           'dataAnalysis': '데이터 분석',
+          'msgNoData': '아직 연습 내역이 없어요.',
           'totalCnt': '총 연습 횟수',
           'songLength': '한 곡 길이',
           'practiceTime': '총 연습 시간',
@@ -64,6 +71,7 @@ class Messages extends Translations {
           //general
           'cancel': '취소',
           'save': '저장',
+          'ok': '확인',
           'delete': '삭제하기',
           'Nsec': '@N 초',
           'Nmin': '@N 분',

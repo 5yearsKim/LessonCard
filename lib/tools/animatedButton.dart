@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 // custom
-import 'package:myapp/config.dart';
+import 'package:lessonCard/config.dart';
 
 class AnimatedButton extends StatefulWidget {
   final bool clicked;
@@ -35,10 +35,11 @@ class _AnimatedButtonState extends State<AnimatedButton> {
         widget.onPressed();
       },
       child: AnimatedContainer(
+        margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(_padding),
         decoration: BoxDecoration(
           color: _color,
-          borderRadius: BorderRadius.circular(40),
+          borderRadius: BorderRadius.circular(50),
           boxShadow: !widget.clicked
               ? null
               : [

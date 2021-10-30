@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 // custom
-import 'package:myapp/config.dart';
-import 'package:myapp/controller.dart';
-import 'package:myapp/tools/numericStepButton.dart';
-import 'package:myapp/tools/animalPicker.dart';
-import 'package:myapp/utils/stamp.dart';
-import 'package:myapp/utils/misc.dart';
+import 'package:lessonCard/config.dart';
+import 'package:lessonCard/controller.dart';
+import 'package:lessonCard/tools/numericStepButton.dart';
+import 'package:lessonCard/tools/animalPicker.dart';
+import 'package:lessonCard/utils/stamp.dart';
+import 'package:lessonCard/utils/misc.dart';
 
 // Track Button
 class TrackButton extends StatefulWidget {
@@ -123,7 +123,10 @@ class _EditTrackState extends State<EditTrack> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: Text(title),
+          title: Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           content: content,
           actions: actions,
         );
@@ -251,10 +254,11 @@ class _EditTrackState extends State<EditTrack> {
               Expanded(
                 flex: lw,
                 child: Center(
-                  child: Text('maxStamp'.tr,
+                  child: Text(
+                    'maxStamp'.tr,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ),
               ),
@@ -276,10 +280,11 @@ class _EditTrackState extends State<EditTrack> {
               Expanded(
                 flex: lw,
                 child: Center(
-                  child: Text('themeStamp'.tr,
+                  child: Text(
+                    'themeStamp'.tr,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ),
               ),
@@ -302,7 +307,8 @@ class _EditTrackState extends State<EditTrack> {
                 onPressed: () {
                   openDeleteConfirm(context, () => Navigator.of(context).pop());
                 },
-                label: Text('delete'.tr,
+                label: Text(
+                  'delete'.tr,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

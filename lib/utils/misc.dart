@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:math';
 // custom
-import 'package:myapp/config.dart';
+import 'package:lessonCard/config.dart';
 
 Color code2color(colorCode, {defaultColor: Colors.blue}) {
   var _color;
@@ -23,7 +23,7 @@ Color lightenColor(Color color, {double amount: 0.3}) {
   double lighter(num x, num amount) {
     amount = amount.clamp(1, 5);
     num newLight = 1 - pow(1 - x, amount);
-    return newLight.toDouble(); 
+    return newLight.toDouble();
   }
 
   final hsl = HSLColor.fromColor(color);

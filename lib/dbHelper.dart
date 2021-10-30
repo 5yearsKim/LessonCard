@@ -72,14 +72,13 @@ class DBHelper {
   }
 
   insertCard(String date, String note) async {
+    print([date, note]);
     int cid = await db.rawInsert(
       '''
-      INSERT INTO card VALUES(?, ?)
-      ON CONFLICT DO NOTHING
+      INSERT OR IGNORE INTO card VALUES(?, ?)
       ''',
       [date, note]
     );
-
     return cid;
   }
 
