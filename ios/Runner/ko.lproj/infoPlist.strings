@@ -1,10 +1,8 @@
 /* 
-  infoPlist.strings
+  InfoPlist.strings
   Runner
 
   Created by hyunu on 2021/11/09.
   
-*/
-
-
+*/  
 CFBundleDisplayName = "음악진도카드";
