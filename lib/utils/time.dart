@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
 String datePrettify(DateTime date, {withYear: false}) {
-  if (Get.locale == 'ko_KR') {
+  if (Get.locale.toString() == 'ko_KR') {
     if (withYear) {
       return DateFormat('y년 M월 d일').format(date);
     } else {
