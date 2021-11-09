@@ -1,0 +1,1 @@
+UPDATE stamp SET note='test' WHERE id=1;

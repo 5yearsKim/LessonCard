@@ -1,0 +1,8 @@
+CREATE TABLE stamp (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  track_id INTEGER,
+  created_at TEXT,
+  note TEXT,
+	FOREIGN KEY(track_id) REFERENCES track(id)
+  ON DELETE CASCADE
+);
