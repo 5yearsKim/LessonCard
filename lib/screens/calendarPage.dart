@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 //custom
-import 'package:lessonCard/controller.dart';
-import 'package:lessonCard/utils/misc.dart';
-// import 'package:lessonCard/dbHelper.dart';
-import 'package:lessonCard/utils/time.dart';
-import 'package:lessonCard/config.dart';
+import 'package:lessoncard/controller.dart';
+import 'package:lessoncard/utils/misc.dart';
+// import 'package:lessoncard/dbHelper.dart';
+import 'package:lessoncard/utils/time.dart';
+import 'package:lessoncard/config.dart';
 
 class CalendarPage extends StatelessWidget {
   final Controller ctrl = Get.find();

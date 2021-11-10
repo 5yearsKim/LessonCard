@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 // custom
-import 'package:lessonCard/config.dart';
-import 'package:lessonCard/controller.dart';
-import 'package:lessonCard/tools/numericStepButton.dart';
-import 'package:lessonCard/tools/animalPicker.dart';
-import 'package:lessonCard/utils/stamp.dart';
-import 'package:lessonCard/utils/misc.dart';
+import 'package:lessoncard/config.dart';
+import 'package:lessoncard/controller.dart';
+import 'package:lessoncard/tools/numericStepButton.dart';
+import 'package:lessoncard/tools/animalPicker.dart';
+import 'package:lessoncard/utils/stamp.dart';
+import 'package:lessoncard/utils/misc.dart';
 
 // Track Button
 class TrackButton extends StatefulWidget {

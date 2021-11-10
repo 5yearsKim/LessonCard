@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 // custom
-import 'package:lessonCard/components/card/trackLine.dart';
-import 'package:lessonCard/components/card/cardNote.dart';
-import 'package:lessonCard/components/card/trackButton.dart';
-import 'package:lessonCard/config.dart';
-import 'package:lessonCard/controller.dart';
-import 'package:lessonCard/tools/text.dart';
-import 'package:lessonCard/utils/misc.dart';
+import 'package:lessoncard/components/card/trackLine.dart';
+import 'package:lessoncard/components/card/cardNote.dart';
+import 'package:lessoncard/components/card/trackButton.dart';
+import 'package:lessoncard/config.dart';
+import 'package:lessoncard/controller.dart';
+import 'package:lessoncard/tools/text.dart';
+import 'package:lessoncard/utils/misc.dart';
 
 class CardPage extends StatelessWidget {
   const CardPage({Key? key}) : super(key: key);

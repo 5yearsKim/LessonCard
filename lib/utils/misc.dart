@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:math';
 // custom
-import 'package:lessonCard/config.dart';
+import 'package:lessoncard/config.dart';
 
 Color code2color(colorCode, {defaultColor: Colors.blue}) {
   var _color;

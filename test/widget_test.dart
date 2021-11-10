@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lessonCard/main.dart';
+import 'package:lessoncard/main.dart';
 
 void main() {
   testWidgets('test widget', (WidgetTester tester) async {

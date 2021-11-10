@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // custom
-import 'package:lessonCard/config.dart';
-import 'package:lessonCard/controller.dart';
-import 'package:lessonCard/utils/misc.dart';
-import 'package:lessonCard/utils/stamp.dart';
-import 'package:lessonCard/utils/time.dart';
+import 'package:lessoncard/config.dart';
+import 'package:lessoncard/controller.dart';
+import 'package:lessoncard/utils/misc.dart';
+import 'package:lessoncard/utils/stamp.dart';
+import 'package:lessoncard/utils/time.dart';
 
 class TrackLine extends StatelessWidget {
   final int i;

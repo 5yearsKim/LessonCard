@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 // custom
-import 'package:lessonCard/utils/stamp.dart';
-import 'package:lessonCard/config.dart';
+import 'package:lessoncard/utils/stamp.dart';
+import 'package:lessoncard/config.dart';
 
 class AnimalPicker extends StatefulWidget {
   final String animal;

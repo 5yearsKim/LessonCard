@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 // custom
-import 'package:lessonCard/config.dart';
+import 'package:lessoncard/config.dart';
 
 class AnimatedButton extends StatefulWidget {
   final bool clicked;

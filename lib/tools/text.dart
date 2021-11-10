@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 // custom
-import 'package:lessonCard/utils/misc.dart';
+import 'package:lessoncard/utils/misc.dart';
 
 class ColorText extends StatefulWidget {
   const ColorText(this.subjectName, this.subjectColor, {Key? key}) : super(key: key);
