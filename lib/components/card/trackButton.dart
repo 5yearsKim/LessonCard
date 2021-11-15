@@ -157,22 +157,23 @@ class _EditTrackState extends State<EditTrack> {
 
   void openColorPicker(BuildContext context) async {
     _openDialog(
-        'themeColor'.tr,
-        MaterialColorPicker(
-          onColorChange: (Color color) {
-            setState(() => _color = color);
-            // Navigator.of(context).pop();
+      'themeColor'.tr,
+      MaterialColorPicker(
+        onColorChange: (Color color) {
+          setState(() => _color = color);
+          // Navigator.of(context).pop();
+        },
+        selectedColor: Colors.blue,
+      ),
+      [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
           },
-          selectedColor: Colors.blue,
+          child: Text('OK'),
         ),
-        [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('OK'),
-          ),
-        ]);
+      ],
+    );
   }
 
   void openDeleteConfirm(BuildContext context, onDismiss) async {
