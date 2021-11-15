@@ -44,7 +44,8 @@ class CalendarPage extends StatelessWidget {
               onPressed: () {
                 Get.toNamed('/analysis');
               },
-              label: Text('dataAnalysis'.tr, style: TextStyle(fontWeight: FontWeight.bold)),
+              label: Text('dataAnalysis'.tr,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
           MoveCard(),
@@ -74,7 +75,6 @@ class _MyCalenderState extends State<MyCalender> {
     if (!isSameDay(ctrl.selectedDay, selectedDay)) {
       ctrl.setSelectedDay(selectedDay);
       await ctrl.bringTrackList();
-      // print(ctrl.trackList);
     }
   }
 
@@ -128,7 +128,8 @@ class _MyCalenderState extends State<MyCalender> {
           headerStyle: HeaderStyle(
             formatButtonVisible: false,
             titleCentered: true,
-            headerMargin: EdgeInsets.only(left: 40, top: 0, right: 40, bottom: 10),
+            headerMargin:
+                EdgeInsets.only(left: 40, top: 0, right: 40, bottom: 10),
             leftChevronIcon: Icon(Icons.arrow_left),
             rightChevronIcon: Icon(Icons.arrow_right),
             titleTextStyle: Theme.of(context).textTheme.headline6!.copyWith(
@@ -161,7 +162,7 @@ class MoveCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<Controller>(builder: (_) {
-      bool hasCard = ctrl.todayCard != null && !ctrl.todayCard['note'].isEmpty;
+      bool hasCard = (ctrl.todayCard != null && !ctrl.todayCard['note'].isEmpty) || ctrl.trackList.isNotEmpty;
       if (hasCard) {
         return InkWell(
           onTap: () async {
@@ -238,13 +239,13 @@ class ScheduleBox extends StatelessWidget {
   final Controller ctrl = Get.find();
 
   Widget wrapSubject(BuildContext context) {
-    return Container(
-      // margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-      width: double.infinity,
-      padding: EdgeInsets.all(10),
-      alignment: Alignment.center,
-      child: GetBuilder<Controller>(builder: (_) {
-        return Wrap(
+    return GetBuilder<Controller>(builder: (_) {
+      return Container(
+        // margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        width: double.infinity,
+        padding: EdgeInsets.all(10),
+        alignment: Alignment.center,
+        child: Wrap(
           spacing: 8.0, // gap between adjacent chips
           runSpacing: 4.0, // gap between lines
           children: [
@@ -265,42 +266,44 @@ class ScheduleBox extends StatelessWidget {
                 ),
               ),
           ],
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   Widget todayNote(context) {
     return GetBuilder<Controller>(builder: (_) {
       bool hasNote = ctrl.todayCard != null && !ctrl.todayCard['note'].isEmpty;
-      if (!hasNote) {
-        return Container();
-      }
+      // if (!hasNote) {
+      //   return Container();
+      // }
+      String pracNote = hasNote ? '${ctrl.todayCard['note']}': '';
       return Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
-          child: Column(
-            children: [
-              Text(
-                'practiceNote'.tr,
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
+        child: Column(
+          children: [
+            Text(
+              'practiceNote'.tr,
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            Container(
+              padding: EdgeInsets.all(5),
+              child: Text(
+                '${pracNote}',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[700],
                     ),
               ),
-              Container(
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  '${ctrl.todayCard['note']}',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        color: Colors.grey[700],
-                      ),
-                ),
-              ),
-            ],
-          ));
+            ),
+          ],
+        ),
+      );
     });
   }
 
@@ -313,7 +316,8 @@ class ScheduleBox extends StatelessWidget {
           child: GetBuilder<Controller>(
               builder: (_) => Text(
                     '${datePrettify(ctrl.selectedDay)}',
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: textColor, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        color: textColor, fontWeight: FontWeight.bold),
                   )),
         ),
         Container(

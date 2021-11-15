@@ -22,7 +22,7 @@ class CardPage extends StatelessWidget {
           ? null
           : AppBar(
               title: Text(
-                'Card'.tr,
+                'card'.tr,
                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
               ),
             ),

@@ -136,7 +136,7 @@ class _EditTrackState extends State<EditTrack> {
 
   void openAnimlPicker(BuildContext context) async {
     _openDialog(
-        '테마 도장',
+        'themeStamp'.tr,
         AnimalPicker(
           animal: stampName,
           onChangeAnimal: (animal) {
@@ -157,7 +157,7 @@ class _EditTrackState extends State<EditTrack> {
 
   void openColorPicker(BuildContext context) async {
     _openDialog(
-        '테마 컬러',
+        'themeColor'.tr,
         MaterialColorPicker(
           onColorChange: (Color color) {
             setState(() => _color = color);
@@ -176,14 +176,14 @@ class _EditTrackState extends State<EditTrack> {
   }
 
   void openDeleteConfirm(BuildContext context, onDismiss) async {
-    _openDialog('정말 삭제하시겠습니까?', Text('삭제하시면 기록들이 다 사라집니다.'), [
+    _openDialog('msgDelete'.tr, Text('msgDeleteConfirm'.tr), [
       TextButton(
         onPressed: () {
           onDismiss();
           Navigator.of(context).pop();
           ctrl.deleteTrack(track['id']);
         },
-        child: Text('삭제'),
+        child: Text('delete'.tr),
       ),
     ]);
   }
